@@ -1,0 +1,18 @@
+Name: ruse
+Population: 100000
+Year Of Creation: 681
+Altitude: 50
+Avg Year Temp: 40
+-------------------------------------------------------------------------
+Name: varna
+Population: 200000
+Year Of Creation: 1666
+Altitude: 0
+Avg Year Temp: 10
+-------------------------------------------------------------------------
+Name: burgas
+Population: 150000
+Year Of Creation: 1264
+Altitude: -10
+Avg Year Temp: -10
+-------------------------------------------------------------------------
