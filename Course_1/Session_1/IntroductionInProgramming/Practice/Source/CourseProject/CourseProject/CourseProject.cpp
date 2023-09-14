@@ -43,6 +43,7 @@ int main() {
 			}
 			catch (const exception& e) {
 				cerr << "Invalid Data Type!";
+				i--;
 			}
 		}
 
@@ -59,7 +60,8 @@ int main() {
 
 		for (int i = 0; i < n; i++) {
 			if (cities[i].yearOfCreation < yearFilter) {
-				file << "Name: " << cities[i].name << "\nPopulation: " << cities[i].population << "\nYear Of Creation: " << cities[i].yearOfCreation << "\nAltitude: " << cities[i].altitude << "\nAvg Year Temp: " << cities[i].avgYearTemp << "\n-------------------------------------------------------------------------\n";
+				file << "Name: " << cities[i].name << "\nPopulation: " << cities[i].population << "\nYear Of Creation: " << cities[i].yearOfCreation <<
+					"\nAltitude: " << cities[i].altitude << "\nAvg Year Temp: " << cities[i].avgYearTemp << "\n-------------------------------------------------------------------------\n";
 			}
 		}
 
