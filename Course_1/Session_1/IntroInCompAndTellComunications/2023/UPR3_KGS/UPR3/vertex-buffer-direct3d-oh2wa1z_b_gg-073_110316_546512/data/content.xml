@@ -1,0 +1,677 @@
+<zuiprezi>
+  <version>4</version>
+  <zui-table>
+    <settings>
+      <autoplay>
+        <delay>4000</delay>
+      </autoplay>
+      <bounds x="-192255.8550491333" y="-47299.79128417969" width="383173.51606178284" height="99406.2966861725"/>
+    </settings>
+    <object id="0" type="button" x="-5503.6" y="-35839.05" r="0" s="45.91643142700195" class="bracket">
+      <type>bracket</type>
+      <size>
+        <w>3070.0999999999985</w>
+        <h>499.175</h>
+      </size>
+    </object>
+    <object id="1" type="label" x="-6802.15" y="-35844.2" r="0" s="316.8855895996094" class="head">
+      <textfield>
+        <x>-204.6</x>
+        <y>-18.35</y>
+        <text><![CDATA[Ресурси в Direct3D. Vertex Buffer]]></text>
+        <annotations>r0-33 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="2" type="label" x="-11430.85000000001" y="-3258.000000000008" r="0" s="161.67626953125" class="body">
+      <textfield>
+        <x>-231.25</x>
+        <y>-34.65</y>
+        <text><![CDATA[3D обектите се създават от полигони - триъгълници]]></text>
+        <annotations>r0-49 { align: left; }</annotations>
+        <w>462.5</w>
+        <h>69.3</h>
+      </textfield>
+    </object>
+    <object id="3" type="label" x="-15251.549999999997" y="31239.949999999997" r="0" s="161.67626953125" class="body">
+      <textfield>
+        <x>-215.95</x>
+        <y>-34.65</y>
+        <text><![CDATA[Триъгълникът се описва
+чрез върхове или въртекси (VERTEX)]]></text>
+        <annotations>r0-23 { align: left; }
+r23-57 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="4" type="shape" x="-15971.250000000002" y="-53.70000000000164" r="0" s="104.98457336425781" class="poly3">
+      <geom type="poly">
+        <p x="0" y="-37.3"/>
+        <p x="66.8875" y="37.3"/>
+        <p x="-66.8875" y="37.3"/>
+        <t>-1</t>
+        <r>0</r>
+      </geom>
+    </object>
+    <object id="5" type="shape" x="33814.850000000006" y="18540.35" r="0" s="104.98457336425781" class="poly1">
+      <geom type="poly">
+        <p x="0" y="-35.349999999999994"/>
+        <p x="66.8875" y="35.349999999999994"/>
+        <p x="-66.8875" y="35.349999999999994"/>
+        <t>0</t>
+        <r>0</r>
+      </geom>
+    </object>
+    <object id="6" type="shape" x="33814.850000000006" y="14720.149999999994" r="0" s="9.959309577941893" class="poly1">
+      <geom type="circle">
+        <r>20</r>
+      </geom>
+    </object>
+    <object id="7" type="shape" x="40829.25" y="22260.049999999996" r="0" s="9.959309577941893" class="poly1">
+      <geom type="circle">
+        <r>20</r>
+      </geom>
+    </object>
+    <object id="9" type="shape" x="26884.650000000005" y="22162.449999999997" r="0" s="9.959309577941893" class="poly1">
+      <geom type="circle">
+        <r>20</r>
+      </geom>
+    </object>
+    <object id="8" type="shape" x="26862.25" y="22106.549999999996" r="0" s="2.5924901962280273" class="poly1">
+      <geom type="circle">
+        <r>20</r>
+      </geom>
+    </object>
+    <object id="10" type="label" x="39135.450000000004" y="14952.049999999996" r="0" s="19.464685440063477" class="body">
+      <textfield>
+        <x>-257.2</x>
+        <y>-99.95</y>
+        <text><![CDATA[Всеки въртекс се определя чрез структура, която съдържа задължително
+X ,Y и Z кордината. 
+
+Също така може да се определи цвета на вертекса или да приеме текстура.]]></text>
+        <annotations>r0-69 { align: left; }
+r69-90 { align: left; }
+r91-162 { align: left; }</annotations>
+        <w>514.35</w>
+        <h>199.9</h>
+      </textfield>
+    </object>
+    <object id="11" type="label" x="45951.1" y="23670.799999999996" r="0" s="19.464685440063477" class="body">
+      <textfield>
+        <x>-218.8</x>
+        <y>-83.65</y>
+        <text><![CDATA[typedef struct SVERTEX
+{
+float x, y, z;   // position for the vertex.
+DWORD color;     // color for the vertex.
+}SVERTEX;
+]]></text>
+        <annotations>r0-23 { align: left; }
+r23-25 { align: left; }
+r25-70 { align: left; }
+r70-112 { align: left; }
+r112-122 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="12" type="label" x="45867.15" y="21100.849999999995" r="0" s="19.464685440063477" class="body">
+      <textfield>
+        <x>-258.9</x>
+        <y>-18.35</y>
+        <text><![CDATA[Структурата се определя по следния начин:]]></text>
+        <annotations>r0-41 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="13" type="label" x="47818.65" y="26494.549999999992" r="0" s="19.464685440063477" class="body">
+      <textfield>
+        <x>-326.35</x>
+        <y>-34.65</y>
+        <text><![CDATA[FVF дескриптор
+#define CUSTOM_VERTEX (D3DFVF_XYZ|D3DFVF_DIFFUSE)]]></text>
+        <annotations>r0-15 { align: left; }
+r15-64 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="14" type="label" x="-131310.3" y="-16477.300000000003" r="0" s="161.67626953125" class="strong">
+      <textfield>
+        <x>-214.25</x>
+        <y>-18.35</y>
+        <text><![CDATA[Определяне на координатите на куб]]></text>
+        <annotations>r0-33 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="15" type="shape" x="-145143.15" y="21911.4" r="0" s="146.97840881347656" class="poly3">
+      <geom type="poly">
+        <p x="-63.0125" y="-51.5125"/>
+        <p x="63.0125" y="-51.5125"/>
+        <p x="63.0125" y="51.5125"/>
+        <p x="-63.0125" y="51.5125"/>
+        <t>-1</t>
+        <r>0</r>
+      </geom>
+    </object>
+    <object id="16" type="shape" x="-146740.19999999998" y="12173.149999999998" r="-15.001498893240834" s="155.7174911816442" class="line3">
+      <geom type="line">
+        <sp>-50.030072206623885 0</sp>
+        <ep>50.030072206623885 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="17" type="shape" x="-131320.75" y="12877.349999999999" r="-23.42501563389185" s="155.7174798022087" class="line3">
+      <geom type="line">
+        <sp>-29.839659844249656 0</sp>
+        <ep>29.839659844249653 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="18" type="shape" x="-133140.24999999997" y="10598.25" r="4.0647623432203" s="155.7174874428639" class="line3">
+      <geom type="line">
+        <sp>-39.14847538538378 0</sp>
+        <ep>39.14847538538377 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="19" type="shape" x="-131321.94999999998" y="26620.399999999998" r="-32.47796595075555" s="155.7174852300511" class="line3">
+      <geom type="line">
+        <sp>-32.45028890472317 0</sp>
+        <ep>32.45028890472317 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="20" type="shape" x="-127057.94999999998" y="17467.05" r="89.96535926610056" s="155.7174814630195" class="line3">
+      <geom type="line">
+        <sp>-41.35000755743584 0</sp>
+        <ep>41.35000755743583 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="21" type="shape" x="-144918.09999999998" y="21759.049999999996" r="39.04524938609958" s="155.71748240950663" class="line3">
+      <geom type="line">
+        <sp>-77.19062847911007 0</sp>
+        <ep>77.19062847911007 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="22" type="shape" x="-131312.99999999997" y="19306.95" r="47.115507089602794" s="155.71749077189185" class="line3">
+      <geom type="line">
+        <sp>-40.226437202417024 0</sp>
+        <ep>40.226437202417024 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="23" type="shape" x="-135584.3" y="22025.5" r="-89.93891709909154" s="155.71748045923633" class="line3">
+      <geom type="line">
+        <sp>46.90002665244446 0</sp>
+        <ep>-46.90002665244445 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="24" type="shape" x="-154245.09999999998" y="21761" r="90" s="155.7174835205078" class="line3">
+      <geom type="line">
+        <sp>-48.6 0</sp>
+        <ep>48.6 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="25" type="shape" x="-144907.15" y="14456.9" r="1.6242990079812554" s="155.71749232072128" class="line3">
+      <geom type="line">
+        <sp>-59.97409857596861 0</sp>
+        <ep>59.97409857596861 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="26" type="shape" x="-144915.4" y="29326.699999999997" r="0" s="155.7174835205078" class="line3">
+      <geom type="line">
+        <sp>-59.9 0</sp>
+        <ep>59.900000000000006 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="27" type="shape" x="-138597.65" y="9890" r="-90" s="155.7174835205078" class="line1">
+      <geom type="arrow">
+        <sp>-75.7375 0</sp>
+        <ep>75.7375 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="28" type="shape" x="-125211.99999999999" y="21678.3" r="0" s="155.7174835205078" class="line1">
+      <geom type="arrow">
+        <sp>-85.95 0</sp>
+        <ep>85.95 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="29" type="shape" x="-148733.4" y="28131.800000000003" r="-32.47546154149528" s="155.71749393649657" class="line1">
+      <geom type="arrow">
+        <sp>77.19694375427048 0</sp>
+        <ep>-77.19694375427048 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="30" type="label" x="-133871.65" y="609.4999999999982" r="0" s="161.67626953125" class="strong">
+      <textfield>
+        <x>-8.05</x>
+        <y>-18.35</y>
+        <text><![CDATA[Y]]></text>
+        <annotations>r0-1 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="31" type="label" x="-111423.74999999999" y="19311.649999999998" r="0" s="161.67626953125" class="strong">
+      <textfield>
+        <x>-8.25</x>
+        <y>-18.35</y>
+        <text><![CDATA[X]]></text>
+        <annotations>r0-1 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="32" type="label" x="-150949.94999999998" y="34467.55" r="0" s="161.67626953125" class="strong">
+      <textfield>
+        <x>-8.35</x>
+        <y>-18.35</y>
+        <text><![CDATA[Z]]></text>
+        <annotations>r0-1 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="33" type="shape" x="-135386.24999999997" y="29281.949999999997" r="0" s="48.757076263427734" class="poly1">
+      <geom type="circle">
+        <r>20</r>
+      </geom>
+    </object>
+    <object id="34" type="shape" x="-135392.8" y="14387.05" r="0" s="48.757076263427734" class="poly1">
+      <geom type="circle">
+        <r>20</r>
+      </geom>
+    </object>
+    <object id="35" type="shape" x="-154228.75" y="14400.4" r="0" s="48.757076263427734" class="poly1">
+      <geom type="circle">
+        <r>20</r>
+      </geom>
+    </object>
+    <object id="36" type="shape" x="-154235.59999999998" y="29288.75" r="0" s="48.757076263427734" class="poly1">
+      <geom type="circle">
+        <r>20</r>
+      </geom>
+    </object>
+    <object id="37" type="label" x="-121152.19999999998" y="29931.35" r="0" s="77.8587417602539" class="strong">
+      <textfield>
+        <x>-166.6</x>
+        <y>-18.35</y>
+        <text><![CDATA[a (1.0f,  -1.0f, 1.0f, 0x000000FF)]]></text>
+        <annotations>r0-34 { color: #6fcc00; }
+r0-34 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="38" type="label" x="-156605.15" y="29086.55" r="0" s="77.8587417602539" class="strong">
+      <textfield>
+        <x>-8.95</x>
+        <y>-18.35</y>
+        <text><![CDATA[b]]></text>
+        <annotations>r0-1 { color: #6fcc00; }
+r0-1 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="39" type="label" x="-156535.6" y="14990" r="0" s="77.8587417602539" class="strong">
+      <textfield>
+        <x>-7.4</x>
+        <y>-18.35</y>
+        <text><![CDATA[c]]></text>
+        <annotations>r0-1 { color: #6fcc00; }
+r0-1 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="40" type="label" x="-133489.4" y="14725.249999999998" r="0" s="77.8587417602539" class="strong">
+      <textfield>
+        <x>-8.95</x>
+        <y>-18.35</y>
+        <text><![CDATA[d]]></text>
+        <annotations>r0-1 { color: #6fcc00; }
+r0-1 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="42" type="button" x="121620.74999999999" y="-8982.800000000001" r="0" s="27.638257980346683" class="bracket">
+      <type>bracket</type>
+      <size>
+        <w>2458.2</w>
+        <h>624.1</h>
+      </size>
+    </object>
+    <object id="41" type="label" x="123347.74999999999" y="-9977.600000000002" r="0" s="161.67626953125" class="strong">
+      <textfield>
+        <x>-184.5</x>
+        <y>-34.65</y>
+        <text><![CDATA[Създаване на въртекс буфера с CreateVertexBuffer]]></text>
+        <annotations>r0-48 { align: left; }</annotations>
+        <w>368.95</w>
+        <h>69.3</h>
+      </textfield>
+    </object>
+    <object id="43" type="label" x="70075.35" y="17647.65" r="0" s="115.4830551147461" class="body">
+      <textfield>
+        <x>-165</x>
+        <y>-18.35</y>
+        <text><![CDATA[Попълва се въртекс буфера]]></text>
+        <annotations>r0-25 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="44" type="label" x="97894.29999999999" y="10639.599999999997" r="0" s="82.4878921508789" class="body">
+      <textfield>
+        <x>-247.5</x>
+        <y>-34.65</y>
+        <text><![CDATA[Подава се на приложението за обработка
+чрез SetStreamSource()]]></text>
+        <annotations>r0-39 { align: left; }
+r39-61 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="45" type="label" x="147388.34999999998" y="11708.449999999999" r="0" s="82.48783111572266" class="body">
+      <textfield>
+        <x>-250.1</x>
+        <y>-34.65</y>
+        <text><![CDATA[Определя се средата за визуализация със 
+SetRenderState();]]></text>
+        <annotations>r0-41 { align: left; }
+r41-58 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="46" type="label" x="179299.25" y="19537.899999999998" r="0" s="82.48783111572266" class="body">
+      <textfield>
+        <x>-140.85</x>
+        <y>-34.65</y>
+        <text><![CDATA[Изчертава се 3D обекта
+DrawPrimitive();]]></text>
+        <annotations>r0-23 { align: left; }
+r23-39 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="47" type="label" x="-188950.45" y="-12593" r="0" s="58.91987609863282" class="strong">
+      <textfield>
+        <x>-56.1</x>
+        <y>-18.35</y>
+        <text><![CDATA[МАТРИЦИ]]></text>
+        <annotations>r0-7 { align: left; }</annotations>
+      </textfield>
+    </object>
+    <object id="48" type="label" x="-179561.10000000003" y="-5168.8" r="0" s="58.91987609863282" class="strong">
+      <textfield>
+        <x>-184.6</x>
+        <y>-83.65</y>
+        <text><![CDATA[Матрица на трансформиране: 
+Указва координатите в 3D пространството
+Ротацията на обекта
+Промяна на размерите]]></text>
+        <annotations>r0-28 { align: left; }
+r28-68 { bullet: true; }
+r28-68 { align: left; }
+r28-68 { blockIndent: 36; }
+r68-88 { bullet: true; }
+r68-88 { align: left; }
+r68-88 { blockIndent: 36; }
+r88-108 { bullet: true; }
+r88-108 { align: left; }
+r88-108 { blockIndent: 36; }</annotations>
+        <w>369.15</w>
+        <h>167.25</h>
+      </textfield>
+    </object>
+    <object id="49" type="label" x="-96340.95" y="-5073.75" r="0" s="58.91987609863281" class="strong">
+      <textfield>
+        <x>-276</x>
+        <y>-83.65</y>
+        <text><![CDATA[Матрица на изгледа: Указва позиционирането на камерата
+В коя точка се намира
+Накъде гледа
+Как е обърната]]></text>
+        <annotations>r0-55 { align: left; }
+r55-77 { bullet: true; }
+r55-77 { align: left; }
+r55-77 { blockIndent: 36; }
+r77-90 { bullet: true; }
+r77-90 { align: left; }
+r77-90 { blockIndent: 36; }
+r90-104 { bullet: true; }
+r90-104 { align: left; }
+r90-104 { blockIndent: 36; }</annotations>
+        <w>552</w>
+        <h>167.25</h>
+      </textfield>
+    </object>
+    <object id="50" type="label" x="-96325.85" y="49408.7" r="0" s="77.8587417602539" class="strong">
+      <textfield>
+        <x>-259.8</x>
+        <y>-34.65</y>
+        <text><![CDATA[Матрица на преспективата: проектира 3D изображението върху 2D повърхност]]></text>
+        <annotations>r0-72 { align: left; }</annotations>
+        <w>519.6</w>
+        <h>69.3</h>
+      </textfield>
+    </object>
+    <object id="51" type="shape" x="68822.8" y="13619.649999999996" r="-15.215154203949773" s="155.71748732981146" class="line1">
+      <geom type="arrow">
+        <sp>-30 0</sp>
+        <ep>30 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="52" type="shape" x="122110.99999999999" y="11667.099999999995" r="0" s="155.7174835205078" class="line1">
+      <geom type="arrow">
+        <sp>-30 0</sp>
+        <ep>30 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+    <object id="53" type="shape" x="170924.1" y="14119.899999999998" r="19.886298446025556" s="155.717488392001" class="line1">
+      <geom type="arrow">
+        <sp>-30 0</sp>
+        <ep>30 0</ep>
+        <t>8</t>
+      </geom>
+    </object>
+  </zui-table>
+  <path>
+    <o>0</o>
+    <o>2</o>
+    <o>4</o>
+    <o>3</o>
+    <o>5</o>
+    <o>10</o>
+    <o>11</o>
+    <o>13</o>
+    <o>28</o>
+    <o>15</o>
+    <o>37</o>
+    <o>43</o>
+    <o>44</o>
+    <o>45</o>
+    <o>46</o>
+    <o>48</o>
+    <o>49</o>
+    <o>50</o>
+  </path>
+  <style type="text/css"><![CDATA[
+@font-face
+{
+	src: url('OpenSans-B.swf');
+	fontFamily: head;
+}
+
+@font-face
+{
+	src: url('OpenSans-I.swf');
+	fontFamily: strong;
+}
+
+@font-face
+{
+	src: url('OpenSans.swf');
+	fontFamily: body;
+}
+
+ZLabel
+{
+	padding: 1.2;
+}
+
+ZLabel.head
+{
+	fontFamily: head;
+	color: #5b28e0;
+}
+
+.line5
+{
+	gradStartColor: #5b28e0;
+	gradEndColor: #5b28e0;
+	color: #5b28e0;
+}
+
+.poly5
+{
+	borderColor: #5b28e0;
+}
+
+ZLabel.strong
+{
+	fontFamily: strong;
+	color: #f00;
+}
+
+.line1
+{
+	gradStartColor: #f00;
+	gradEndColor: #f00;
+	color: #f00;
+}
+
+.poly1
+{
+	gradEndColor: #f00;
+	borderThickness: 0;
+	borderColor: #f00;
+	gradStartColor: #f00;
+}
+
+ZLabel.body
+{
+	fontFamily: body;
+	color: #322c69;
+}
+
+Background
+{
+	gradEnd: #fff;
+	gradStart: #fff;
+}
+
+Grid
+{
+	color: #ddd;
+}
+
+ZFrame.circle
+{
+	gradEndColor: #6fcc00;
+	borderThickness: 0;
+	gradStartColor: #6fcc00;
+	borderColor: #d5ff66;
+}
+
+.line4
+{
+	gradStartColor: #6fcc00;
+	gradEndColor: #6fcc00;
+	color: #6fcc00;
+}
+
+.poly4
+{
+	borderColor: #6fcc00;
+}
+
+ZFrame.bracket
+{
+	gradEndColor: #6fcc00;
+	borderThickness: 0;
+	gradStartColor: #6fcc00;
+	borderColor: #d5ff66;
+}
+
+.line2
+{
+	gradStartColor: #6fcc00;
+	gradEndColor: #6fcc00;
+	color: #6fcc00;
+}
+
+.poly2
+{
+	borderColor: #6fcc00;
+}
+
+ZFrame.roundrect
+{
+	gradEndColor: #6fcc00;
+	borderThickness: 0;
+	gradStartColor: #6fcc00;
+	borderColor: #d5ff66;
+}
+
+ZPoly
+{
+	thickness: 100;
+	gradEndAlpha: 0.7;
+	gradStartAlpha: 0.6;
+	borderAlpha: 1;
+	radius: 0;
+	lockTintAlpha: 0.6;
+}
+
+ZCircle
+{
+	thickness: 100;
+	borderAlpha: 1;
+	radius: 0;
+	lockTintAlpha: 0.6;
+}
+
+ZArrow
+{
+	gradEndColor: #6fcc00;
+	borderThickness: 0;
+	borderColor: #bbff4c;
+	gradStartColor: #6fcc00;
+}
+
+.line3
+{
+	gradStartColor: #6fcc00;
+	gradEndColor: #6fcc00;
+	color: #6fcc00;
+}
+
+.poly3
+{
+	borderColor: #6fcc00;
+}
+
+ZLine
+{
+	color: #6fcc00;
+}
+
+ZCurveLine
+{
+	color: #6fcc00;
+}
+
+ZMarker
+{
+	alpha: 0.3;
+	color: #ffff0d;
+}
+
+ZVideo
+{
+	padding: 1.2;
+}
+
+]]></style>
+  <hash>154002342ec5d618563915276e13a40d</hash>
+<sync><oid>oh2wa1z_b_gg</oid><hash>154002342ec5d618563915276e13a40d</hash></sync><config>nGuwNKvjeB49JAnR1CspFdrvgTKt2KxTJb/x7uyKVZPu1TDrKyRF+IUBihyJzfNMiY6aReEgGWZCsVpUBt3D/e5d+tMtl2EjL4U1NQ8IpKTiOCNg4aAB6GYfGQGiy57PTXk6j4FjWLtiVpA01SOmH4czHs0eA2v+zJ8QcHXoOKhb25lbA14NW3sIUkbvKMv9sC0W+5yBb+ERAZWRfbByriJ62SUfkDfAWAzWyga1ojiRkhD0GJSBYTIL6ReR1MPnSrDKRcJj4eJwNRxpvOVf2rx+oxIALbbHbfBkgayZMgE71Hi619dLesVjTYo9Jt4dwzeU9OjINqUvWLut514nNA==</config></zuiprezi>
