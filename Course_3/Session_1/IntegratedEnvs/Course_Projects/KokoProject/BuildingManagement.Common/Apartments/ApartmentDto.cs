@@ -6,6 +6,8 @@ public class ApartmentDto
 
     public int BuildingId { get; set; }
 
+    public string BuildingName { get; set; } = string.Empty;
+
     public string ApartmentNumber { get; set; } = string.Empty;
 
     public int Floor { get; set; }

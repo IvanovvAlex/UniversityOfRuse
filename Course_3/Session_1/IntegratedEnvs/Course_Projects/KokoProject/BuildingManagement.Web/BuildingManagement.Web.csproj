@@ -10,4 +10,8 @@
     <ProjectReference Include="..\BuildingManagement.Common\BuildingManagement.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" />
+  </ItemGroup>
+
 </Project>

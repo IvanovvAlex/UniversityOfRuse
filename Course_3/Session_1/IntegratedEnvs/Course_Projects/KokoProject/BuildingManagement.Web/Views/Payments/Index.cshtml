@@ -25,12 +25,12 @@ else
 {
     <div class="card shadow-sm border-0">
         <div class="card-body p-0">
-            <table class="table table-hover mb-0">
+            <table id="paymentsTable" class="table table-hover mb-0">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>ID Жител</th>
-                        <th>ID Тип такса</th>
+                        <th>Жител</th>
+                        <th>Тип такса</th>
                         <th>Сума (лв.)</th>
                         <th>Дата на плащане</th>
                         <th>Месец за</th>
@@ -42,8 +42,13 @@ else
                 {
                     <tr>
                         <td><span class="badge bg-secondary">@payment.Id</span></td>
-                        <td><span class="badge bg-info">@payment.ResidentId</span></td>
-                        <td><span class="badge bg-primary">@payment.FeeTypeId</span></td>
+                        <td>
+                            <strong>@payment.ResidentName</strong>
+                            <br><small class="text-muted">ID: @payment.ResidentId</small>
+                        </td>
+                        <td>
+                            <span class="badge bg-primary">@payment.FeeTypeName</span>
+                        </td>
                         <td><strong class="text-success">@payment.Amount.ToString("F2") лв.</strong></td>
                         <td>@payment.PaymentDate.ToString("dd.MM.yyyy")</td>
                         <td>@payment.MonthFor</td>

@@ -21,6 +21,7 @@ public class ApartmentService : IApartmentService
     {
         List<Apartment> entities = await this.dbContext.Apartments
             .AsNoTracking()
+            .Include(a => a.Building)
             .OrderBy(a => a.BuildingId)
             .ThenBy(a => a.Floor)
             .ThenBy(a => a.ApartmentNumber)
@@ -37,6 +38,7 @@ public class ApartmentService : IApartmentService
     {
         Apartment? entity = await this.dbContext.Apartments
             .AsNoTracking()
+            .Include(a => a.Building)
             .FirstOrDefaultAsync(a => a.Id == id);
 
         if (entity == null)
@@ -103,6 +105,7 @@ public class ApartmentService : IApartmentService
         {
             Id = entity.Id,
             BuildingId = entity.BuildingId,
+            BuildingName = entity.Building?.Name ?? string.Empty,
             ApartmentNumber = entity.ApartmentNumber,
             Floor = entity.Floor,
             Area = entity.Area,

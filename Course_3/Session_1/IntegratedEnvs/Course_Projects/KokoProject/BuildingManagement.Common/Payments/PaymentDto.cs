@@ -8,7 +8,11 @@ public class PaymentDto
 
     public int ResidentId { get; set; }
 
+    public string ResidentName { get; set; } = string.Empty;
+
     public int FeeTypeId { get; set; }
+
+    public string FeeTypeName { get; set; } = string.Empty;
 
     public decimal Amount { get; set; }
 

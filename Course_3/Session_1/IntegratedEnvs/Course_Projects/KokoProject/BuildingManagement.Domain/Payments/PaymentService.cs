@@ -22,6 +22,8 @@ public class PaymentService : IPaymentService
     {
         List<Payment> entities = await this.dbContext.Payments
             .AsNoTracking()
+            .Include(p => p.Resident)
+            .Include(p => p.FeeType)
             .OrderByDescending(p => p.PaymentDate)
             .ToListAsync();
 
@@ -106,7 +108,9 @@ public class PaymentService : IPaymentService
         {
             Id = entity.Id,
             ResidentId = entity.ResidentId,
+            ResidentName = entity.Resident?.FullName ?? string.Empty,
             FeeTypeId = entity.FeeTypeId,
+            FeeTypeName = entity.FeeType?.Name ?? string.Empty,
             Amount = entity.Amount,
             PaymentDate = entity.PaymentDate,
             MonthFor = entity.MonthFor

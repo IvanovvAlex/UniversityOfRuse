@@ -21,6 +21,7 @@ public class ResidentService : IResidentService
     {
         List<Resident> entities = await this.dbContext.Residents
             .AsNoTracking()
+            .Include(r => r.Apartment)
             .OrderBy(r => r.FullName)
             .ToListAsync();
 
@@ -101,6 +102,7 @@ public class ResidentService : IResidentService
         {
             Id = entity.Id,
             ApartmentId = entity.ApartmentId,
+            ApartmentNumber = entity.Apartment?.ApartmentNumber ?? string.Empty,
             FullName = entity.FullName,
             Phone = entity.Phone,
             Email = entity.Email,

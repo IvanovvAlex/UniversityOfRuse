@@ -23,23 +23,23 @@ public static class DbSeeder
         {
             new FeeType
             {
-                Name = "Building Maintenance",
-                Description = "Monthly maintenance fee for common areas and services."
+                Name = "Поддръжка на сграда",
+                Description = "Месечна такса за поддръжка на общите части и услуги."
             },
             new FeeType
             {
-                Name = "Elevator",
-                Description = "Elevator maintenance and operation fee."
+                Name = "Асансьор",
+                Description = "Такса за поддръжка и експлоатация на асансьора."
             },
             new FeeType
             {
-                Name = "Cleaning",
-                Description = "Cleaning services for common parts of the building."
+                Name = "Почистване",
+                Description = "Услуги за почистване на общите части на сградата."
             },
             new FeeType
             {
-                Name = "Reserve Fund",
-                Description = "Reserve fund for future repairs and improvements."
+                Name = "Резервен фонд",
+                Description = "Резервен фонд за бъдещи ремонти и подобрения."
             }
         };
 

@@ -25,11 +25,11 @@ else
 {
     <div class="card shadow-sm border-0">
         <div class="card-body p-0">
-            <table class="table table-hover mb-0">
+            <table id="residentsTable" class="table table-hover mb-0">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>ID Апартамент</th>
+                        <th>Апартамент</th>
                         <th>Пълно име</th>
                         <th>Телефон</th>
                         <th>Имейл</th>
@@ -42,7 +42,10 @@ else
                 {
                     <tr>
                         <td><span class="badge bg-secondary">@resident.Id</span></td>
-                        <td><span class="badge bg-info">@resident.ApartmentId</span></td>
+                        <td>
+                            <strong>Ап. @resident.ApartmentNumber</strong>
+                            <br><small class="text-muted">ID: @resident.ApartmentId</small>
+                        </td>
                         <td><strong>@resident.FullName</strong></td>
                         <td>@resident.Phone</td>
                         <td>@(resident.Email ?? "-")</td>
