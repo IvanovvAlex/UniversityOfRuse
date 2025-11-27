@@ -1,38 +1,53 @@
 @model BuildingManagement.Common.Residents.ResidentDto
 @{
-    ViewData["Title"] = "Edit Resident";
+    ViewData["Title"] = "Редактирай жител";
 }
 
-<h1 class="mb-3">Edit Resident</h1>
-
-<form asp-action="Edit" method="post" class="card shadow-sm p-3">
-    <input type="hidden" asp-for="Id" />
-    <div class="mb-3">
-        <label asp-for="ApartmentId" class="form-label"></label>
-        <input asp-for="ApartmentId" class="form-control" />
-        <span asp-validation-for="ApartmentId" class="text-danger"></span>
+<div class="card shadow-sm border-0">
+    <div class="card-header">
+        <h1 class="h4 mb-0">
+            <i class="bi bi-pencil-square me-2"></i>Редактирай жител
+        </h1>
     </div>
-    <div class="mb-3">
-        <label asp-for="FullName" class="form-label"></label>
-        <input asp-for="FullName" class="form-control" />
-        <span asp-validation-for="FullName" class="text-danger"></span>
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div class="mb-3">
+                <label asp-for="ApartmentId" class="form-label">ID на апартамент <span class="text-danger">*</span></label>
+                <input asp-for="ApartmentId" class="form-control" />
+                <span asp-validation-for="ApartmentId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label">Пълно име <span class="text-danger">*</span></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Phone" class="form-label">Телефон <span class="text-danger">*</span></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Имейл</label>
+                <input asp-for="Email" type="email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3 form-check form-switch">
+                <input asp-for="IsOwner" class="form-check-input" type="checkbox" />
+                <label asp-for="IsOwner" class="form-check-label">
+                    Собственик на апартамента
+                </label>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle me-1"></i>Запази промените
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-x-circle me-1"></i>Отказ
+                </a>
+            </div>
+        </form>
     </div>
-    <div class="mb-3">
-        <label asp-for="Phone" class="form-label"></label>
-        <input asp-for="Phone" class="form-control" />
-        <span asp-validation-for="Phone" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="mb-3 form-check">
-        <input asp-for="IsOwner" class="form-check-input" />
-        <label asp-for="IsOwner" class="form-check-label"></label>
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
-</form>
+</div>
 
 

@@ -1,28 +1,45 @@
 @model BuildingManagement.Common.Payments.PaymentDto
 @{
-    ViewData["Title"] = "Delete Payment";
+    ViewData["Title"] = "Изтрий плащане";
 }
 
-<h1 class="mb-3 text-danger">Delete Payment</h1>
-<p>Are you sure you want to delete this payment?</p>
+<div class="card shadow-sm border-0 border-danger">
+    <div class="card-header bg-danger text-white">
+        <h1 class="h4 mb-0">
+            <i class="bi bi-exclamation-triangle me-2"></i>Изтриване на плащане
+        </h1>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong>Внимание!</strong> Сигурни ли сте, че искате да изтриете това плащане? Това действие не може да бъде отменено.
+        </div>
 
-<dl class="row">
-    <dt class="col-sm-2">Resident Id</dt>
-    <dd class="col-sm-10">@Model.ResidentId</dd>
-    <dt class="col-sm-2">Fee Type Id</dt>
-    <dd class="col-sm-10">@Model.FeeTypeId</dd>
-    <dt class="col-sm-2">Amount</dt>
-    <dd class="col-sm-10">@Model.Amount</dd>
-    <dt class="col-sm-2">Payment Date</dt>
-    <dd class="col-sm-10">@Model.PaymentDate.ToShortDateString()</dd>
-    <dt class="col-sm-2">Month For</dt>
-    <dd class="col-sm-10">@Model.MonthFor</dd>
-</dl>
+        <dl class="row">
+            <dt class="col-sm-3">ID на жител:</dt>
+            <dd class="col-sm-9"><span class="badge bg-info">@Model.ResidentId</span></dd>
+            <dt class="col-sm-3">ID на тип такса:</dt>
+            <dd class="col-sm-9"><span class="badge bg-primary">@Model.FeeTypeId</span></dd>
+            <dt class="col-sm-3">Сума:</dt>
+            <dd class="col-sm-9"><strong class="text-success">@Model.Amount.ToString("F2") лв.</strong></dd>
+            <dt class="col-sm-3">Дата на плащане:</dt>
+            <dd class="col-sm-9">@Model.PaymentDate.ToString("dd.MM.yyyy")</dd>
+            <dt class="col-sm-3">Месец за:</dt>
+            <dd class="col-sm-9">@Model.MonthFor</dd>
+        </dl>
 
-<form asp-action="Delete" method="post">
-    <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
-</form>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash me-1"></i>Да, изтрий
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-x-circle me-1"></i>Отказ
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
 
 

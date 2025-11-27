@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Табло";
 }
 
 <div class="container-fluid">
@@ -7,19 +7,22 @@
         <div class="col-12 col-lg-8">
             <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <h1 class="card-title h3 mb-3">Building Management Dashboard</h1>
+                    <h1 class="card-title h3 mb-3">
+                        <i class="bi bi-speedometer2 me-2 text-primary"></i>Табло за управление
+                    </h1>
                     <p class="card-text text-muted">
-                        Use this system to manage buildings, apartments, residents, fee types, and monthly payments in one place.
+                        Използвайте тази система за управление на сгради, апартаменти, жители, типове такси и месечни
+                        плащания на едно място.
                     </p>
                     <div class="d-flex flex-wrap gap-2 mt-3">
                         <a asp-controller="Buildings" asp-action="Index" class="btn btn-primary">
-                            Manage Buildings
+                            <i class="bi bi-building me-1"></i>Управление на сгради
                         </a>
                         <a asp-controller="Residents" asp-action="Index" class="btn btn-outline-primary">
-                            Manage Residents
+                            <i class="bi bi-people me-1"></i>Управление на жители
                         </a>
                         <a asp-controller="Payments" asp-action="Index" class="btn btn-outline-secondary">
-                            View Payments
+                            <i class="bi bi-cash-stack me-1"></i>Преглед на плащания
                         </a>
                     </div>
                 </div>
@@ -28,18 +31,25 @@
         <div class="col-12 col-lg-4 mt-3 mt-lg-0">
             <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <h2 class="h5 mb-3">Quick Links</h2>
+                    <h2 class="h5 mb-3">
+                        <i class="bi bi-link-45deg me-2"></i>Бързи връзки
+                    </h2>
                     <ul class="list-unstyled mb-0">
                         <li class="mb-2">
-                            <a href="http://localhost:8080/scalar" target="_blank" class="link-primary text-decoration-none">
-                                API Documentation (Scalar)
+                            <a href="http://localhost:8080/scalar" target="_blank"
+                                class="link-primary text-decoration-none">
+                                <i class="bi bi-code-square me-1"></i>API Документация (Scalar)
                             </a>
                         </li>
                         <li class="mb-2">
-                            <span class="text-muted">Residents per building report (coming soon)</span>
+                            <span class="text-muted">
+                                <i class="bi bi-clock me-1"></i>Справка жители по сгради (скоро)
+                            </span>
                         </li>
                         <li class="mb-2">
-                            <span class="text-muted">Monthly payments overview (coming soon)</span>
+                            <span class="text-muted">
+                                <i class="bi bi-clock me-1"></i>Преглед на месечни плащания (скоро)
+                            </span>
                         </li>
                     </ul>
                 </div>
@@ -51,36 +61,52 @@
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
-                    <h3 class="h6 text-uppercase text-muted">Buildings</h3>
-                    <p class="mb-2">Keep track of residential buildings, entrances, and notes.</p>
-                    <a asp-controller="Buildings" asp-action="Index" class="stretched-link text-decoration-none">Go to buildings</a>
+                    <h3 class="h6 text-uppercase text-muted">
+                        <i class="bi bi-building me-2 text-primary"></i>Сгради
+                    </h3>
+                    <p class="mb-2">Проследявайте жилищни сгради, входове и бележки.</p>
+                    <a asp-controller="Buildings" asp-action="Index" class="stretched-link text-decoration-none">
+                        Към сгради <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
-                    <h3 class="h6 text-uppercase text-muted">Apartments</h3>
-                    <p class="mb-2">Organize apartments by building, floor, and area.</p>
-                    <a asp-controller="Apartments" asp-action="Index" class="stretched-link text-decoration-none">Go to apartments</a>
+                    <h3 class="h6 text-uppercase text-muted">
+                        <i class="bi bi-house-door me-2 text-success"></i>Апартаменти
+                    </h3>
+                    <p class="mb-2">Организирайте апартаменти по сграда, етаж и площ.</p>
+                    <a asp-controller="Apartments" asp-action="Index" class="stretched-link text-decoration-none">
+                        Към апартаменти <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
-                    <h3 class="h6 text-uppercase text-muted">Residents</h3>
-                    <p class="mb-2">Manage owners and tenants, contact details, and ownership.</p>
-                    <a asp-controller="Residents" asp-action="Index" class="stretched-link text-decoration-none">Go to residents</a>
+                    <h3 class="h6 text-uppercase text-muted">
+                        <i class="bi bi-people me-2 text-info"></i>Жители
+                    </h3>
+                    <p class="mb-2">Управлявайте собственици и наематели, контакти и собственост.</p>
+                    <a asp-controller="Residents" asp-action="Index" class="stretched-link text-decoration-none">
+                        Към жители <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
                 </div>
             </div>
         </div>
         <div class="col-12 col-md-6 col-lg-3">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
-                    <h3 class="h6 text-uppercase text-muted">Payments</h3>
-                    <p class="mb-2">Record monthly fees, payments, and generate reports.</p>
-                    <a asp-controller="Payments" asp-action="Index" class="stretched-link text-decoration-none">Go to payments</a>
+                    <h3 class="h6 text-uppercase text-muted">
+                        <i class="bi bi-cash-stack me-2 text-warning"></i>Плащания
+                    </h3>
+                    <p class="mb-2">Записвайте месечни такси, плащания и генерирайте справки.</p>
+                    <a asp-controller="Payments" asp-action="Index" class="stretched-link text-decoration-none">
+                        Към плащания <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
                 </div>
             </div>
         </div>

@@ -40,7 +40,7 @@ public class ApartmentsController : Controller
         }
 
         await this.apartmentsApiClient.CreateAsync(dto);
-        return RedirectToAction("Index", "Buildings");
+        return RedirectToAction(nameof(Index));
     }
 }
 
