@@ -1,0 +1,51 @@
+@model IEnumerable<BuildingManagement.Common.Buildings.BuildingDto>
+@{
+    ViewData["Title"] = "Buildings";
+}
+
+<h1 class="mb-3">Buildings</h1>
+<p class="text-muted">List of buildings loaded from the API.</p>
+
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-primary">Add Building</a>
+</div>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">No buildings available.</p>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Entrance</th>
+                <th>Notes</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var building in Model)
+        {
+            <tr>
+                <td>@building.Id</td>
+                <td>@building.Name</td>
+                <td>@building.Address</td>
+                <td>@building.Entrance</td>
+                <td>@building.Notes</td>
+                <td class="text-nowrap">
+                    <a asp-controller="Apartments" asp-action="Create" asp-route-buildingId="@building.Id" class="btn btn-sm btn-success me-1">Add Apartment</a>
+                    <a asp-action="Edit" asp-route-id="@building.Id" class="btn btn-sm btn-outline-secondary me-1">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@building.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+
+

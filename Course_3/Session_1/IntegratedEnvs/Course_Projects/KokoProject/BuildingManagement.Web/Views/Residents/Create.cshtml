@@ -1,0 +1,36 @@
+@model BuildingManagement.Common.Residents.ResidentDto
+@{
+    ViewData["Title"] = "Add Resident";
+}
+
+<h1 class="mb-3">Add Resident</h1>
+
+<form asp-action="Create" method="post" class="card shadow-sm p-3">
+    <div class="mb-3">
+        <label asp-for="ApartmentId" class="form-label"></label>
+        <input asp-for="ApartmentId" class="form-control" readonly />
+    </div>
+    <div class="mb-3">
+        <label asp-for="FullName" class="form-label"></label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Phone" class="form-label"></label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3 form-check">
+        <input asp-for="IsOwner" class="form-check-input" />
+        <label asp-for="IsOwner" class="form-check-label"></label>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+
+

@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16
+    container_name: buildingmanagement-db
+    environment:
+      POSTGRES_USER: buildinguser
+      POSTGRES_PASSWORD: buildingpass
+      POSTGRES_DB: buildingdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: BuildingManagement.Api/Dockerfile
+    image: buildingmanagement-api
+    container_name: buildingmanagement-api
+    depends_on:
+      - db
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=buildingdb;Username=buildinguser;Password=buildingpass"
+    ports:
+      - "8080:8080"
+
+  web:
+    build:
+      context: .
+      dockerfile: BuildingManagement.Web/Dockerfile
+    image: buildingmanagement-web
+    container_name: buildingmanagement-web
+    depends_on:
+      - api
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ApiSettings__BaseUrl: "http://api:8080"
+    ports:
+      - "8081:8081"
+
+volumes:
+  pgdata:

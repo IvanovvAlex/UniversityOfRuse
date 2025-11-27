@@ -1,0 +1,39 @@
+@model BuildingManagement.Web.Models.Payments.PaymentFormViewModel
+@{
+    ViewData["Title"] = "Edit Payment";
+}
+
+<h1 class="mb-3">Edit Payment</h1>
+
+<form asp-action="Edit" method="post" class="card shadow-sm p-3">
+    <input type="hidden" asp-for="Payment.Id" />
+    <div class="mb-3">
+        <label asp-for="Payment.ResidentId" class="form-label"></label>
+        <input asp-for="Payment.ResidentId" class="form-control" />
+        <span asp-validation-for="Payment.ResidentId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Payment.FeeTypeId" class="form-label"></label>
+        <select asp-for="Payment.FeeTypeId" asp-items="Model.FeeTypes" class="form-select"></select>
+        <span asp-validation-for="Payment.FeeTypeId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Payment.Amount" class="form-label"></label>
+        <input asp-for="Payment.Amount" class="form-control" />
+        <span asp-validation-for="Payment.Amount" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Payment.PaymentDate" class="form-label"></label>
+        <input asp-for="Payment.PaymentDate" class="form-control" type="date" />
+        <span asp-validation-for="Payment.PaymentDate" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Payment.MonthFor" class="form-label"></label>
+        <input asp-for="Payment.MonthFor" class="form-control" type="month" />
+        <span asp-validation-for="Payment.MonthFor" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+
+

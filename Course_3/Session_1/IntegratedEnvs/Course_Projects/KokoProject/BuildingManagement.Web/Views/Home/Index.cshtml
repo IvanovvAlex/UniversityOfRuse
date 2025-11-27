@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12 col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h1 class="card-title h3 mb-3">Building Management Dashboard</h1>
+                    <p class="card-text text-muted">
+                        Use this system to manage buildings, apartments, residents, fee types, and monthly payments in one place.
+                    </p>
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <a asp-controller="Buildings" asp-action="Index" class="btn btn-primary">
+                            Manage Buildings
+                        </a>
+                        <a asp-controller="Residents" asp-action="Index" class="btn btn-outline-primary">
+                            Manage Residents
+                        </a>
+                        <a asp-controller="Payments" asp-action="Index" class="btn btn-outline-secondary">
+                            View Payments
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-4 mt-3 mt-lg-0">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Quick Links</h2>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <a href="http://localhost:8080/scalar" target="_blank" class="link-primary text-decoration-none">
+                                API Documentation (Scalar)
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <span class="text-muted">Residents per building report (coming soon)</span>
+                        </li>
+                        <li class="mb-2">
+                            <span class="text-muted">Monthly payments overview (coming soon)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h3 class="h6 text-uppercase text-muted">Buildings</h3>
+                    <p class="mb-2">Keep track of residential buildings, entrances, and notes.</p>
+                    <a asp-controller="Buildings" asp-action="Index" class="stretched-link text-decoration-none">Go to buildings</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h3 class="h6 text-uppercase text-muted">Apartments</h3>
+                    <p class="mb-2">Organize apartments by building, floor, and area.</p>
+                    <a asp-controller="Apartments" asp-action="Index" class="stretched-link text-decoration-none">Go to apartments</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h3 class="h6 text-uppercase text-muted">Residents</h3>
+                    <p class="mb-2">Manage owners and tenants, contact details, and ownership.</p>
+                    <a asp-controller="Residents" asp-action="Index" class="stretched-link text-decoration-none">Go to residents</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h3 class="h6 text-uppercase text-muted">Payments</h3>
+                    <p class="mb-2">Record monthly fees, payments, and generate reports.</p>
+                    <a asp-controller="Payments" asp-action="Index" class="stretched-link text-decoration-none">Go to payments</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

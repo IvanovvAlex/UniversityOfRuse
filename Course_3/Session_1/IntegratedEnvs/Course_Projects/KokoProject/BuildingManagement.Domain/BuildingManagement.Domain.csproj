@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BuildingManagement.Data\BuildingManagement.Data.csproj" />
+    <ProjectReference Include="..\BuildingManagement.Common\BuildingManagement.Common.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,45 @@
+@model IEnumerable<BuildingManagement.Common.Payments.PaymentDto>
+@{
+    ViewData["Title"] = "Payments";
+}
+
+<h1 class="mb-3">Payments</h1>
+<p class="text-muted">Payments loaded from the API.</p>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">No payments available.</p>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Id</th>
+                <th>Resident Id</th>
+                <th>Fee Type Id</th>
+                <th>Amount</th>
+                <th>Payment Date</th>
+                <th>Month For</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var payment in Model)
+        {
+            <tr>
+                <td>@payment.Id</td>
+                <td>@payment.ResidentId</td>
+                <td>@payment.FeeTypeId</td>
+                <td>@payment.Amount</td>
+                <td>@payment.PaymentDate.ToShortDateString()</td>
+                <td>@payment.MonthFor</td>
+                <td class="text-nowrap">
+                    <a asp-action="Edit" asp-route-id="@payment.Id" class="btn btn-sm btn-outline-secondary me-1">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@payment.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

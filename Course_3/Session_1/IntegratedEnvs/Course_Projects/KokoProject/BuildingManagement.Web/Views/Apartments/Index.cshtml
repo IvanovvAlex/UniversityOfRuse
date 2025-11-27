@@ -1,0 +1,47 @@
+@model IEnumerable<BuildingManagement.Common.Apartments.ApartmentDto>
+@{
+    ViewData["Title"] = "Apartments";
+}
+
+<h1 class="mb-3">Apartments</h1>
+<p class="text-muted">All apartments loaded from the API.</p>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">No apartments available.</p>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Id</th>
+                <th>Building Id</th>
+                <th>Number</th>
+                <th>Floor</th>
+                <th>Area</th>
+                <th>Notes</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var apartment in Model)
+        {
+            <tr>
+                <td>@apartment.Id</td>
+                <td>@apartment.BuildingId</td>
+                <td>@apartment.ApartmentNumber</td>
+                <td>@apartment.Floor</td>
+                <td>@apartment.Area</td>
+                <td>@apartment.Notes</td>
+                <td class="text-nowrap">
+                    <a asp-controller="Residents" asp-action="Create" asp-route-apartmentId="@apartment.Id" class="btn btn-sm btn-success me-1">Add Resident</a>
+                    <a asp-action="Edit" asp-route-id="@apartment.Id" class="btn btn-sm btn-outline-secondary me-1">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@apartment.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
