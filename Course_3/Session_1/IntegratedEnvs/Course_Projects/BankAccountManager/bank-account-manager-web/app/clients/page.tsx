@@ -17,6 +17,7 @@ import { PageHeader } from "../../components/ui/page-header";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Alert } from "../../components/ui/alert";
+import { useToast } from "../../components/ui/toast";
 import {
   TableWrapper,
   Table,
@@ -52,6 +53,8 @@ export default function ClientsPage() {
     isActive: true,
   });
 
+  const toast = useToast();
+
   const isEditing: boolean = useMemo(() => form.id !== undefined, [form.id]);
 
   async function loadClients() {
@@ -61,7 +64,9 @@ export default function ClientsPage() {
       const data = await getClients();
       setClients(data);
     } catch (e) {
-      setError((e as Error).message);
+      const message = (e as Error).message || "Възникна грешка при зареждане на клиентите.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -83,7 +88,10 @@ export default function ClientsPage() {
       });
       setClients(data);
     } catch (e) {
-      setError((e as Error).message);
+      const message =
+        (e as Error).message || "Възникна грешка при търсене на клиенти.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -112,6 +120,21 @@ export default function ClientsPage() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+    if (!form.firstName.trim() || !form.lastName.trim() || !form.email.trim() || !form.phone.trim()) {
+      const message = "Моля, попълнете всички задължителни полета за клиента.";
+      setError(message);
+      toast.showError(message);
+      return;
+    }
+
+    const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    if (!emailPattern.test(form.email.trim())) {
+      const message = "Моля, въведете валиден имейл адрес.";
+      setError(message);
+      toast.showError(message);
+      return;
+    }
+
     setLoading(true);
     setError(null);
     try {
@@ -123,6 +146,7 @@ export default function ClientsPage() {
           phone: form.phone,
         };
         await createClient(payload);
+        toast.showSuccess("Клиентът беше създаден успешно.");
       } else {
         const payload: UpdateClientRequest = {
           firstName: form.firstName,
@@ -132,11 +156,15 @@ export default function ClientsPage() {
           isActive: form.isActive,
         };
         await updateClient(form.id, payload);
+        toast.showSuccess("Клиентът беше обновен успешно.");
       }
       await loadClients();
       resetForm();
     } catch (e) {
-      setError((e as Error).message);
+      const message =
+        (e as Error).message || "Възникна грешка при запис на клиент.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -151,8 +179,12 @@ export default function ClientsPage() {
     try {
       await deleteClient(id);
       await loadClients();
+      toast.showSuccess("Клиентът беше изтрит успешно.");
     } catch (e) {
-      setError((e as Error).message);
+      const message =
+        (e as Error).message || "Възникна грешка при изтриване на клиент.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -176,6 +208,7 @@ export default function ClientsPage() {
       {error && <Alert variant="error">{error}</Alert>}
 
       <form
+        noValidate
         onSubmit={handleSearch}
         className="grid gap-3 rounded-xl border border-slate-200 bg-white/80 p-4 text-sm md:grid-cols-4 shadow-sm"
       >
@@ -232,6 +265,7 @@ export default function ClientsPage() {
       </form>
 
       <form
+        noValidate
         onSubmit={handleSubmit}
         className="grid gap-3 rounded-xl border border-slate-200 bg-white/80 p-4 text-sm md:grid-cols-5 shadow-sm"
       >

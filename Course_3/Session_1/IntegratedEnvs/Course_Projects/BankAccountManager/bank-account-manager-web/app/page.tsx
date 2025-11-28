@@ -9,15 +9,38 @@ import {
 import { PageHeader } from "../components/ui/page-header";
 import { Card } from "../components/ui/card";
 import { Button } from "../components/ui/button";
+import { useToast } from "../components/ui/toast";
 
 export default function HomePage() {
+  const toast = useToast();
+
+  function handleAllReportsExport() {
+    downloadAllReportsExcel();
+    toast.showSuccess("Експортът на всички отчети към Excel беше стартиран.");
+  }
+
+  function handleClientsExport() {
+    downloadClientsExcel();
+    toast.showSuccess("Експортът на клиентите към Excel беше стартиран.");
+  }
+
+  function handleAccountsExport() {
+    downloadAccountsExcel();
+    toast.showSuccess("Експортът на сметките към Excel беше стартиран.");
+  }
+
+  function handleTransactionsExport() {
+    downloadTransactionsExcel({});
+    toast.showSuccess("Експортът на транзакциите към Excel беше стартиран.");
+  }
+
   return (
     <section className="flex w-full flex-col gap-6">
       <PageHeader
         title="Обзор на банковите операции"
         description="Използвайте навигацията отгоре, за да управлявате клиенти, сметки, транзакции и банкови операции. Бързите действия за експортиране на основните отчети са налични по-долу."
         actions={
-          <Button onClick={downloadAllReportsExcel} size="md">
+          <Button onClick={handleAllReportsExport} size="md">
             Експорт на всички отчети (Excel)
           </Button>
         }
@@ -32,7 +55,7 @@ export default function HomePage() {
             Пълен списък с клиенти с контакти и статус.
           </p>
           <Button
-            onClick={downloadClientsExcel}
+            onClick={handleClientsExport}
             size="sm"
             className="mt-1 self-start"
           >
@@ -48,7 +71,7 @@ export default function HomePage() {
             Всички сметки с наличности и свързани клиенти.
           </p>
           <Button
-            onClick={downloadAccountsExcel}
+            onClick={handleAccountsExport}
             size="sm"
             className="mt-1 self-start"
           >
@@ -65,7 +88,7 @@ export default function HomePage() {
             резултатите, след което експортирайте същия избор оттам.
           </p>
           <Button
-            onClick={() => downloadTransactionsExcel({})}
+            onClick={handleTransactionsExport}
             size="sm"
             className="mt-1 self-start"
           >

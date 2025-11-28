@@ -27,6 +27,7 @@ import {
   TableHeaderCell,
 } from "../../components/ui/table";
 import { Spinner } from "../../components/ui/spinner";
+import { useToast } from "../../components/ui/toast";
 
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<TransactionDto[]>([]);
@@ -44,6 +45,8 @@ export default function TransactionsPage() {
   );
   const [minAmount, setMinAmount] = useState<string>("");
   const [maxAmount, setMaxAmount] = useState<string>("");
+
+  const toast = useToast();
 
   function getTransactionTypeLabel(type: TransactionType): string {
     if (type === "Deposit" || type === 0) {
@@ -84,7 +87,11 @@ export default function TransactionsPage() {
       setClients(clientsData);
       setTransactions(transactionsData);
     } catch (e) {
-      setError((e as Error).message);
+      const message =
+        (e as Error).message ||
+        "Възникна грешка при зареждане на транзакциите.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -113,7 +120,11 @@ export default function TransactionsPage() {
       });
       setTransactions(data);
     } catch (e) {
-      setError((e as Error).message);
+      const message =
+        (e as Error).message ||
+        "Възникна грешка при търсене на транзакции.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -132,6 +143,7 @@ export default function TransactionsPage() {
       minAmount: minAmount ? Number(minAmount) : undefined,
       maxAmount: maxAmount ? Number(maxAmount) : undefined,
     });
+    toast.showSuccess("Експортът на транзакции към Excel беше стартиран.");
   }
 
   return (

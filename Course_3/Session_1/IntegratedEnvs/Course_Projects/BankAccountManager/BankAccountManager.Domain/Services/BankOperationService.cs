@@ -38,6 +38,12 @@ namespace BankAccountManager.Domain.Services
                 return null;
             }
 
+            Client? client = await this.clientRepository.GetByIdAsync(account.ClientId, cancellationToken);
+            if (client == null || !client.IsActive)
+            {
+                throw new InvalidOperationException("Сметката не е активна.");
+            }
+
             if (request.Amount <= 0m)
             {
                 throw new InvalidOperationException("Сумата трябва да бъде положителна.");
@@ -77,6 +83,12 @@ namespace BankAccountManager.Domain.Services
             if (account == null)
             {
                 return null;
+            }
+
+            Client? client = await this.clientRepository.GetByIdAsync(account.ClientId, cancellationToken);
+            if (client == null || !client.IsActive)
+            {
+                throw new InvalidOperationException("Сметката не е активна.");
             }
 
             if (request.Amount <= 0m)
@@ -127,6 +139,19 @@ namespace BankAccountManager.Domain.Services
                 return (null, null);
             }
 
+            Client? sourceClient = await this.clientRepository.GetByIdAsync(sourceAccount.ClientId, cancellationToken);
+            Client? destinationClient = await this.clientRepository.GetByIdAsync(destinationAccount.ClientId, cancellationToken);
+
+            if (sourceClient == null || !sourceClient.IsActive || destinationClient == null || !destinationClient.IsActive)
+            {
+                throw new InvalidOperationException("И двете сметки трябва да бъдат активни.");
+            }
+
+            if (sourceAccount.Id == destinationAccount.Id)
+            {
+                throw new InvalidOperationException("Изходната и целевата сметка трябва да бъдат различни.");
+            }
+
             if (request.Amount <= 0m)
             {
                 throw new InvalidOperationException("Сумата трябва да бъде положителна.");
@@ -139,9 +164,6 @@ namespace BankAccountManager.Domain.Services
 
             sourceAccount.Balance -= request.Amount;
             destinationAccount.Balance += request.Amount;
-
-            Client? sourceClient = await this.clientRepository.GetByIdAsync(sourceAccount.ClientId, cancellationToken);
-            Client? destinationClient = await this.clientRepository.GetByIdAsync(destinationAccount.ClientId, cancellationToken);
 
             Transaction sourceTransaction = new Transaction
             {

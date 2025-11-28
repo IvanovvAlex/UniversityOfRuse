@@ -60,16 +60,18 @@ namespace BankAccountManager.Domain.Services
 
         public async Task<AccountDto> CreateAsync(CreateAccountRequest request, CancellationToken cancellationToken)
         {
+            this.ValidateAccountData(request.AccountNumber, request.Currency);
+
             Client? client = await this.clientRepository.GetByIdAsync(request.ClientId, cancellationToken);
             if (client == null)
             {
-                throw new InvalidOperationException("Client not found.");
+                throw new InvalidOperationException("Клиентът не е намерен.");
             }
 
             Account existingWithNumber = await this.accountRepository.GetByAccountNumberAsync(request.AccountNumber, cancellationToken) ?? new Account();
             if (existingWithNumber.Id != Guid.Empty)
             {
-                throw new InvalidOperationException("Account number already exists.");
+                throw new InvalidOperationException("Сметка с този номер вече съществува.");
             }
 
             Account account = new Account
@@ -94,10 +96,12 @@ namespace BankAccountManager.Domain.Services
                 return null;
             }
 
+            this.ValidateAccountData(existing.AccountNumber, request.Currency);
+
             Client? client = await this.clientRepository.GetByIdAsync(request.ClientId, cancellationToken);
             if (client == null)
             {
-                throw new InvalidOperationException("Client not found.");
+                throw new InvalidOperationException("Клиентът не е намерен.");
             }
 
             existing.ClientId = request.ClientId;
@@ -119,6 +123,31 @@ namespace BankAccountManager.Domain.Services
 
             await this.accountRepository.DeleteAsync(existing, cancellationToken);
             return true;
+        }
+
+        private void ValidateAccountData(string accountNumber, string currency)
+        {
+            if (string.IsNullOrWhiteSpace(accountNumber))
+            {
+                throw new InvalidOperationException("Номерът на сметката е задължителен.");
+            }
+
+            string accountNumberValue = accountNumber.Trim();
+            if (accountNumberValue.Length < 8 || accountNumberValue.Length > 34)
+            {
+                throw new InvalidOperationException("Номерът на сметката е с невалидна дължина.");
+            }
+
+            if (string.IsNullOrWhiteSpace(currency))
+            {
+                throw new InvalidOperationException("Валутата е задължителна.");
+            }
+
+            string currencyValue = currency.Trim().ToUpperInvariant();
+            if (currencyValue != "BGN" && currencyValue != "EUR" && currencyValue != "USD")
+            {
+                throw new InvalidOperationException("Неподдържана валута. Разрешени са BGN, EUR или USD.");
+            }
         }
 
         private async Task<AccountDto> MapToDtoAsync(Account account, CancellationToken cancellationToken)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BankAccountManager.Common.Clients;
+using System.Text.RegularExpressions;
 using BankAccountManager.Data.Entities;
 using BankAccountManager.Data.Repositories;
 
@@ -50,6 +51,8 @@ namespace BankAccountManager.Domain.Services
 
         public async Task<ClientDto> CreateAsync(CreateClientRequest request, CancellationToken cancellationToken)
         {
+            this.ValidateClientData(request.FirstName, request.LastName, request.Email, request.Phone);
+
             Client client = new Client
             {
                 FirstName = request.FirstName.Trim(),
@@ -73,6 +76,8 @@ namespace BankAccountManager.Domain.Services
                 return null;
             }
 
+            this.ValidateClientData(request.FirstName, request.LastName, request.Email, request.Phone);
+
             existing.FirstName = request.FirstName.Trim();
             existing.LastName = request.LastName.Trim();
             existing.Email = request.Email.Trim();
@@ -95,6 +100,63 @@ namespace BankAccountManager.Domain.Services
 
             await this.clientRepository.DeleteAsync(existing, cancellationToken);
             return true;
+        }
+
+        private void ValidateClientData(string firstName, string lastName, string email, string phone)
+        {
+            if (string.IsNullOrWhiteSpace(firstName))
+            {
+                throw new InvalidOperationException("Собственото име е задължително.");
+            }
+
+            if (firstName.Trim().Length > 100)
+            {
+                throw new InvalidOperationException("Собственото име е твърде дълго.");
+            }
+
+            if (string.IsNullOrWhiteSpace(lastName))
+            {
+                throw new InvalidOperationException("Фамилното име е задължително.");
+            }
+
+            if (lastName.Trim().Length > 100)
+            {
+                throw new InvalidOperationException("Фамилното име е твърде дълго.");
+            }
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                throw new InvalidOperationException("Имейлът е задължителен.");
+            }
+
+            string emailValue = email.Trim();
+            if (emailValue.Length > 200)
+            {
+                throw new InvalidOperationException("Имейлът е твърде дълъг.");
+            }
+
+            Regex emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+            if (!emailRegex.IsMatch(emailValue))
+            {
+                throw new InvalidOperationException("Невалиден формат на имейл адрес.");
+            }
+
+            if (string.IsNullOrWhiteSpace(phone))
+            {
+                throw new InvalidOperationException("Телефонът е задължителен.");
+            }
+
+            string phoneValue = phone.Trim();
+            if (phoneValue.Length > 50)
+            {
+                throw new InvalidOperationException("Телефонният номер е твърде дълъг.");
+            }
+
+            Regex phoneRegex = new Regex(@"^[0-9+\-\s]{6,20}$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+            if (!phoneRegex.IsMatch(phoneValue))
+            {
+                throw new InvalidOperationException("Невалиден формат на телефонен номер.");
+            }
         }
 
         private ClientDto MapToDto(Client client)

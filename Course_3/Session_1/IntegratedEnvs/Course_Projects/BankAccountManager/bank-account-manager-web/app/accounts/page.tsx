@@ -20,6 +20,7 @@ import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Select } from "../../components/ui/select";
 import { Alert } from "../../components/ui/alert";
+import { useToast } from "../../components/ui/toast";
 import {
   TableWrapper,
   Table,
@@ -52,6 +53,8 @@ export default function AccountsPage() {
     currency: "BGN",
   });
 
+  const toast = useToast();
+
   const isEditing: boolean = useMemo(() => form.id !== undefined, [form.id]);
 
   async function loadData() {
@@ -65,7 +68,9 @@ export default function AccountsPage() {
       setAccounts(accountsData);
       setClients(clientsData);
     } catch (e) {
-      setError((e as Error).message);
+      const message = (e as Error).message || "Възникна грешка при зареждане на сметките.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -87,7 +92,10 @@ export default function AccountsPage() {
       });
       setAccounts(data);
     } catch (e) {
-      setError((e as Error).message);
+      const message =
+        (e as Error).message || "Възникна грешка при търсене на сметки.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -113,7 +121,21 @@ export default function AccountsPage() {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     if (form.clientId === "") {
-      setError("Моля, изберете клиент.");
+      const warnMessage = "Моля, изберете клиент.";
+      setError(warnMessage);
+      toast.showWarning(warnMessage);
+      return;
+    }
+    if (!form.accountNumber.trim() && !isEditing) {
+      const message = "Моля, въведете номер на сметката.";
+      setError(message);
+      toast.showError(message);
+      return;
+    }
+    if (!form.currency.trim()) {
+      const message = "Моля, въведете валута.";
+      setError(message);
+      toast.showError(message);
       return;
     }
     setLoading(true);
@@ -130,17 +152,22 @@ export default function AccountsPage() {
           currency: payloadBase.currency,
         };
         await createAccount(payload);
+        toast.showSuccess("Сметката беше създадена успешно.");
       } else {
         const payload: UpdateAccountRequest = {
           clientId: payloadBase.clientId,
           currency: payloadBase.currency,
         };
         await updateAccount(form.id, payload);
+        toast.showSuccess("Сметката беше обновена успешно.");
       }
       await loadData();
       resetForm();
     } catch (e) {
-      setError((e as Error).message);
+      const message =
+        (e as Error).message || "Възникна грешка при запис на сметка.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -155,8 +182,12 @@ export default function AccountsPage() {
     try {
       await deleteAccount(id);
       await loadData();
+      toast.showSuccess("Сметката беше изтрита успешно.");
     } catch (e) {
-      setError((e as Error).message);
+      const message =
+        (e as Error).message || "Възникна грешка при изтриване на сметка.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -180,6 +211,7 @@ export default function AccountsPage() {
       {error && <Alert variant="error">{error}</Alert>}
 
       <form
+        noValidate
         onSubmit={handleSearch}
         className="grid gap-3 rounded-xl border border-slate-200 bg-white/80 p-4 text-sm md:grid-cols-4 shadow-sm"
       >
@@ -242,6 +274,7 @@ export default function AccountsPage() {
       </form>
 
       <form
+        noValidate
         onSubmit={handleSubmit}
         className="grid gap-3 rounded-xl border border-slate-200 bg-white/80 p-4 text-sm md:grid-cols-4 shadow-sm"
       >

@@ -21,6 +21,7 @@ import { Select } from "../../components/ui/select";
 import { Alert } from "../../components/ui/alert";
 import { Card } from "../../components/ui/card";
 import { Spinner } from "../../components/ui/spinner";
+import { useToast } from "../../components/ui/toast";
 
 export default function OperationsPage() {
   const [accounts, setAccounts] = useState<AccountDto[]>([]);
@@ -48,6 +49,8 @@ export default function OperationsPage() {
   const [transferAmount, setTransferAmount] = useState<string>("");
   const [transferDescription, setTransferDescription] = useState<string>("");
 
+  const toast = useToast();
+
   async function loadData() {
     setLoading(true);
     setError(null);
@@ -59,7 +62,11 @@ export default function OperationsPage() {
       setAccounts(accountsData);
       setClients(clientsData);
     } catch (e) {
-      setError((e as Error).message);
+      const message =
+        (e as Error).message ||
+        "Възникна грешка при зареждане на данните за операциите.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -82,7 +89,16 @@ export default function OperationsPage() {
   async function handleDeposit(event: FormEvent) {
     event.preventDefault();
     if (depositAccountId === "") {
-      setError("Моля, изберете сметка за внасяне.");
+      const warnMessage = "Моля, изберете сметка за внасяне.";
+      setError(warnMessage);
+      toast.showWarning(warnMessage);
+      return;
+    }
+    const depositAmountValue = Number(depositAmount);
+    if (Number.isNaN(depositAmountValue) || depositAmountValue <= 0) {
+      const message = "Моля, въведете коректна положителна сума за внасяне.";
+      setError(message);
+      toast.showError(message);
       return;
     }
     setLoading(true);
@@ -91,18 +107,22 @@ export default function OperationsPage() {
     try {
       const payload: DepositRequest = {
         accountId: String(depositAccountId),
-        amount: Number(depositAmount),
+        amount: depositAmountValue,
         description: depositDescription,
       };
       const result = await deposit(payload);
       setMessage(
         `Внасянето е успешно. Нова наличност по сметка ${result.accountNumber}: ${result.balance.toFixed(2)}`,
       );
+      toast.showSuccess("Внасянето беше извършено успешно.");
       await loadData();
       setDepositAmount("");
       setDepositDescription("");
     } catch (e) {
-      setError((e as Error).message);
+      const message =
+        (e as Error).message || "Възникна грешка при внасяне по сметката.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -111,7 +131,16 @@ export default function OperationsPage() {
   async function handleWithdraw(event: FormEvent) {
     event.preventDefault();
     if (withdrawAccountId === "") {
-      setError("Моля, изберете сметка за теглене.");
+      const warnMessage = "Моля, изберете сметка за теглене.";
+      setError(warnMessage);
+      toast.showWarning(warnMessage);
+      return;
+    }
+    const withdrawAmountValue = Number(withdrawAmount);
+    if (Number.isNaN(withdrawAmountValue) || withdrawAmountValue <= 0) {
+      const message = "Моля, въведете коректна положителна сума за теглене.";
+      setError(message);
+      toast.showError(message);
       return;
     }
     setLoading(true);
@@ -120,18 +149,22 @@ export default function OperationsPage() {
     try {
       const payload: WithdrawRequest = {
         accountId: String(withdrawAccountId),
-        amount: Number(withdrawAmount),
+        amount: withdrawAmountValue,
         description: withdrawDescription,
       };
       const result = await withdraw(payload);
       setMessage(
         `Тегленето е успешно. Нова наличност по сметка ${result.accountNumber}: ${result.balance.toFixed(2)}`,
       );
+      toast.showSuccess("Тегленето беше извършено успешно.");
       await loadData();
       setWithdrawAmount("");
       setWithdrawDescription("");
     } catch (e) {
-      setError((e as Error).message);
+      const message =
+        (e as Error).message || "Възникна грешка при теглене от сметката.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -140,7 +173,17 @@ export default function OperationsPage() {
   async function handleTransfer(event: FormEvent) {
     event.preventDefault();
     if (sourceAccountId === "" || destinationAccountId === "") {
-      setError("Моля, изберете както изходна, така и целева сметка.");
+      const warnMessage =
+        "Моля, изберете както изходна, така и целева сметка.";
+      setError(warnMessage);
+      toast.showWarning(warnMessage);
+      return;
+    }
+    const transferAmountValue = Number(transferAmount);
+    if (Number.isNaN(transferAmountValue) || transferAmountValue <= 0) {
+      const message = "Моля, въведете коректна положителна сума за превод.";
+      setError(message);
+      toast.showError(message);
       return;
     }
     setLoading(true);
@@ -150,13 +193,14 @@ export default function OperationsPage() {
       const payload: TransferRequest = {
         sourceAccountId: sourceAccountId,
         destinationAccountId: destinationAccountId,
-        amount: Number(transferAmount),
+        amount: transferAmountValue,
         description: transferDescription,
       };
       const result = await transfer(payload);
       setMessage(
         `Преводът е успешен. Наличност по изходна сметка: ${result.sourceAccount.balance.toFixed(2)}, наличност по целева сметка: ${result.destinationAccount.balance.toFixed(2)}.`,
       );
+      toast.showSuccess("Преводът беше извършен успешно.");
       await loadData();
       setTransferAmount("");
       setTransferDescription("");
@@ -165,7 +209,10 @@ export default function OperationsPage() {
       setDestinationClientId("");
       setDestinationAccountId("");
     } catch (e) {
-      setError((e as Error).message);
+      const message =
+        (e as Error).message || "Възникна грешка при превода между сметки.";
+      setError(message);
+      toast.showError(message);
     } finally {
       setLoading(false);
     }
@@ -183,7 +230,7 @@ export default function OperationsPage() {
       {error && <Alert variant="error">{error}</Alert>}
 
       <div className="grid gap-4 md:grid-cols-3">
-        <form onSubmit={handleDeposit}>
+        <form noValidate onSubmit={handleDeposit}>
           <Card className="flex flex-col gap-3 text-sm">
             <h2 className="text-sm font-semibold text-slate-900">
               Внасяне
@@ -232,7 +279,7 @@ export default function OperationsPage() {
           </Card>
         </form>
 
-        <form onSubmit={handleWithdraw}>
+        <form noValidate onSubmit={handleWithdraw}>
           <Card className="flex flex-col gap-3 text-sm">
             <h2 className="text-sm font-semibold text-slate-900">
               Теглене
@@ -282,7 +329,7 @@ export default function OperationsPage() {
           </Card>
         </form>
 
-        <form onSubmit={handleTransfer}>
+        <form noValidate onSubmit={handleTransfer}>
           <Card className="flex flex-col gap-3 text-sm">
             <h2 className="text-sm font-semibold text-slate-900">
               Превод
