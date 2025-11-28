@@ -2,7 +2,11 @@ export type TransactionType =
   | "Deposit"
   | "Withdrawal"
   | "TransferIn"
-  | "TransferOut";
+  | "TransferOut"
+  | 0
+  | 1
+  | 2
+  | 3;
 
 export type ClientDto = {
   id: string;
@@ -208,7 +212,7 @@ export async function searchTransactions(params: {
   if (params.fromDate) query.set("fromDate", params.fromDate);
   if (params.toDate) query.set("toDate", params.toDate);
   if (params.transactionType)
-    query.set("transactionType", params.transactionType);
+    query.set("transactionType", String(params.transactionType));
   if (params.minAmount) query.set("minAmount", String(params.minAmount));
   if (params.maxAmount) query.set("maxAmount", String(params.maxAmount));
   const response = await fetch(
@@ -275,7 +279,7 @@ export function downloadTransactionsExcel(params: {
   if (params.fromDate) query.set("fromDate", params.fromDate);
   if (params.toDate) query.set("toDate", params.toDate);
   if (params.transactionType)
-    query.set("transactionType", params.transactionType);
+    query.set("transactionType", String(params.transactionType));
   if (params.minAmount) query.set("minAmount", String(params.minAmount));
   if (params.maxAmount) query.set("maxAmount", String(params.maxAmount));
   const url = `${apiBaseUrl}/api/reports/transactions/excel?${query.toString()}`;

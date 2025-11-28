@@ -25,10 +25,23 @@ export default function TransactionsPage() {
   const [fromDate, setFromDate] = useState<string>("");
   const [toDate, setToDate] = useState<string>("");
   const [transactionType, setTransactionType] = useState<TransactionType | "">(
-    "",
+    ""
   );
   const [minAmount, setMinAmount] = useState<string>("");
   const [maxAmount, setMaxAmount] = useState<string>("");
+
+  function getTransactionTypeLabel(type: TransactionType): string {
+    if (type === "Deposit" || type === 0) {
+      return "Внасяне";
+    }
+    if (type === "Withdrawal" || type === 1) {
+      return "Теглене";
+    }
+    if (type === "TransferIn" || type === 2) {
+      return "Входящ превод";
+    }
+    return "Изходящ превод";
+  }
 
   async function loadInitial() {
     setLoading(true);
@@ -64,7 +77,9 @@ export default function TransactionsPage() {
         fromDate: fromDate || undefined,
         toDate: toDate || undefined,
         transactionType:
-          transactionType === "" ? undefined : (transactionType as TransactionType),
+          transactionType === ""
+            ? undefined
+            : (transactionType as TransactionType),
         minAmount: minAmount ? Number(minAmount) : undefined,
         maxAmount: maxAmount ? Number(maxAmount) : undefined,
       });
@@ -83,7 +98,9 @@ export default function TransactionsPage() {
       fromDate: fromDate || undefined,
       toDate: toDate || undefined,
       transactionType:
-        transactionType === "" ? undefined : (transactionType as TransactionType),
+        transactionType === ""
+          ? undefined
+          : (transactionType as TransactionType),
       minAmount: minAmount ? Number(minAmount) : undefined,
       maxAmount: maxAmount ? Number(maxAmount) : undefined,
     });
@@ -93,11 +110,10 @@ export default function TransactionsPage() {
     <section className="flex w-full flex-col gap-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Транзакции
-          </h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Транзакции</h1>
           <p className="text-sm text-slate-300">
-            Преглеждайте и филтрирайте регистъра на транзакциите и експортирайте извлечения към Excel.
+            Преглеждайте и филтрирайте регистъра на транзакциите и експортирайте
+            извлечения към Excel.
           </p>
         </div>
         <button
@@ -123,9 +139,7 @@ export default function TransactionsPage() {
           <label className="text-xs uppercase text-slate-400">Сметка</label>
           <select
             value={accountId}
-            onChange={(e) =>
-              setAccountId(e.target.value as "" | string)
-            }
+            onChange={(e) => setAccountId(e.target.value as "" | string)}
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
           >
             <option value="">Всички</option>
@@ -140,9 +154,7 @@ export default function TransactionsPage() {
           <label className="text-xs uppercase text-slate-400">Клиент</label>
           <select
             value={clientId}
-            onChange={(e) =>
-              setClientId(e.target.value as "" | string)
-            }
+            onChange={(e) => setClientId(e.target.value as "" | string)}
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
           >
             <option value="">Всички</option>
@@ -177,9 +189,7 @@ export default function TransactionsPage() {
             value={transactionType}
             onChange={(e) =>
               setTransactionType(
-                e.target.value === ""
-                  ? ""
-                  : (e.target.value as TransactionType),
+                e.target.value === "" ? "" : (e.target.value as TransactionType)
               )
             }
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
@@ -231,9 +241,9 @@ export default function TransactionsPage() {
                 setTransactionType("");
                 setMinAmount("");
                 setMaxAmount("");
-                searchTransactions({}).then(setTransactions).catch((e) =>
-                  setError((e as Error).message),
-                );
+                searchTransactions({})
+                  .then(setTransactions)
+                  .catch((e) => setError((e as Error).message));
               }}
               className="hidden rounded border border-slate-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:bg-slate-800 md:inline-flex"
               disabled={loading}
@@ -270,22 +280,8 @@ export default function TransactionsPage() {
                 </td>
                 <td className="px-3 py-2 text-slate-300">{tx.clientName}</td>
                 <td className="px-3 py-2">
-                  <span
-                    className={`rounded-full px-2 py-1 text-xs font-semibold ${
-                      tx.transactionType === "Deposit"
-                        ? "bg-emerald-600/30 text-emerald-300"
-                        : tx.transactionType === "Withdrawal"
-                          ? "bg-red-700/40 text-red-200"
-                          : "bg-slate-700/40 text-slate-200"
-                    }`}
-                  >
-                    {tx.transactionType === "Deposit"
-                      ? "Внасяне"
-                      : tx.transactionType === "Withdrawal"
-                        ? "Теглене"
-                        : tx.transactionType === "TransferIn"
-                          ? "Входящ превод"
-                          : "Изходящ превод"}
+                  <span className="rounded-full px-2 py-1 text-xs font-semibold bg-slate-700/40 text-slate-200">
+                    {getTransactionTypeLabel(tx.transactionType)}
                   </span>
                 </td>
                 <td className="px-3 py-2 text-emerald-300">
@@ -320,5 +316,3 @@ export default function TransactionsPage() {
     </section>
   );
 }
-
-
