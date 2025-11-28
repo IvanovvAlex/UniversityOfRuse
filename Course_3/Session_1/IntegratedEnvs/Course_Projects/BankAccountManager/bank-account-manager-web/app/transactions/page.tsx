@@ -56,7 +56,7 @@ export default function TransactionsPage() {
   const toast = useToast();
 
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const pageSize = 10;
+  const [pageSize, setPageSize] = useState<number>(10);
   const [sortField, setSortField] = useState<TransactionSortField>("createdAt");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
@@ -472,7 +472,7 @@ export default function TransactionsPage() {
           </TableBody>
         </Table>
       </TableWrapper>
-      <div className="flex items-center justify-between gap-3 text-xs text-slate-600">
+      <div className="flex flex-col gap-2 text-xs text-slate-600 sm:flex-row sm:items-center sm:justify-between">
         <div>
           Показани{" "}
           <span className="font-semibold">
@@ -485,26 +485,45 @@ export default function TransactionsPage() {
           </span>{" "}
           транзакции
         </div>
-        <div className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-1 py-0.5 shadow-sm">
-          <button
-            type="button"
-            onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-            disabled={currentPageSafe === 1}
-            className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            ‹
-          </button>
-          <span className="px-1 text-[11px] font-medium">
-            Стр. {currentPageSafe} от {totalPages}
-          </span>
-          <button
-            type="button"
-            onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
-            disabled={currentPageSafe === totalPages}
-            className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            ›
-          </button>
+        <div className="flex items-center justify-between gap-3 sm:justify-end">
+          <div className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2 py-0.5 shadow-sm">
+            <span className="text-[11px] text-slate-500">Редове на страница</span>
+            <select
+              value={pageSize}
+              onChange={(e) => {
+                setCurrentPage(1);
+                setPageSize(Number(e.target.value));
+              }}
+              className="h-7 rounded-full border border-slate-200 bg-white px-2 text-[11px] text-slate-700 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+            >
+              {[5, 10, 20, 50, 100].map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-1 py-0.5 shadow-sm">
+            <button
+              type="button"
+              onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+              disabled={currentPageSafe === 1}
+              className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              ‹
+            </button>
+            <span className="px-1 text-[11px] font-medium">
+              Стр. {currentPageSafe} от {totalPages}
+            </span>
+            <button
+              type="button"
+              onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+              disabled={currentPageSafe === totalPages}
+              className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              ›
+            </button>
+          </div>
         </div>
       </div>
     </section>
