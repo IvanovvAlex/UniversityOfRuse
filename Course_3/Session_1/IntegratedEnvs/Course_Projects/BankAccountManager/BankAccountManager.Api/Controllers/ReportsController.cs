@@ -47,14 +47,14 @@ namespace BankAccountManager.Api.Controllers
             using XLWorkbook workbook = new XLWorkbook();
 
             // Clients worksheet
-            IXLWorksheet clientsSheet = workbook.Worksheets.Add("Clients");
-            clientsSheet.Cell(1, 1).Value = "Id";
-            clientsSheet.Cell(1, 2).Value = "First Name";
-            clientsSheet.Cell(1, 3).Value = "Last Name";
-            clientsSheet.Cell(1, 4).Value = "Email";
-            clientsSheet.Cell(1, 5).Value = "Phone";
-            clientsSheet.Cell(1, 6).Value = "Created At";
-            clientsSheet.Cell(1, 7).Value = "Is Active";
+            IXLWorksheet clientsSheet = workbook.Worksheets.Add("Клиенти");
+            clientsSheet.Cell(1, 1).Value = "Идентификатор";
+            clientsSheet.Cell(1, 2).Value = "Собствено име";
+            clientsSheet.Cell(1, 3).Value = "Фамилно име";
+            clientsSheet.Cell(1, 4).Value = "Имейл";
+            clientsSheet.Cell(1, 5).Value = "Телефон";
+            clientsSheet.Cell(1, 6).Value = "Създаден на";
+            clientsSheet.Cell(1, 7).Value = "Активен";
 
             int clientsRow = 2;
             foreach (ClientDto client in clients)
@@ -70,13 +70,13 @@ namespace BankAccountManager.Api.Controllers
             }
 
             // Accounts worksheet
-            IXLWorksheet accountsSheet = workbook.Worksheets.Add("Accounts");
-            accountsSheet.Cell(1, 1).Value = "Id";
-            accountsSheet.Cell(1, 2).Value = "Client";
-            accountsSheet.Cell(1, 3).Value = "Account Number";
-            accountsSheet.Cell(1, 4).Value = "Currency";
-            accountsSheet.Cell(1, 5).Value = "Balance";
-            accountsSheet.Cell(1, 6).Value = "Created At";
+            IXLWorksheet accountsSheet = workbook.Worksheets.Add("Сметки");
+            accountsSheet.Cell(1, 1).Value = "Идентификатор";
+            accountsSheet.Cell(1, 2).Value = "Клиент";
+            accountsSheet.Cell(1, 3).Value = "Номер на сметка";
+            accountsSheet.Cell(1, 4).Value = "Валута";
+            accountsSheet.Cell(1, 5).Value = "Наличност";
+            accountsSheet.Cell(1, 6).Value = "Създадена на";
 
             int accountsRow = 2;
             foreach (AccountDto account in accounts)
@@ -91,16 +91,16 @@ namespace BankAccountManager.Api.Controllers
             }
 
             // Transactions worksheet
-            IXLWorksheet transactionsSheet = workbook.Worksheets.Add("Transactions");
-            transactionsSheet.Cell(1, 1).Value = "Id";
-            transactionsSheet.Cell(1, 2).Value = "Account";
-            transactionsSheet.Cell(1, 3).Value = "Client";
-            transactionsSheet.Cell(1, 4).Value = "Type";
-            transactionsSheet.Cell(1, 5).Value = "Amount";
-            transactionsSheet.Cell(1, 6).Value = "Description";
-            transactionsSheet.Cell(1, 7).Value = "Created At";
-            transactionsSheet.Cell(1, 8).Value = "Related Account Id";
-            transactionsSheet.Cell(1, 9).Value = "Related Client Id";
+            IXLWorksheet transactionsSheet = workbook.Worksheets.Add("Транзакции");
+            transactionsSheet.Cell(1, 1).Value = "Идентификатор";
+            transactionsSheet.Cell(1, 2).Value = "Сметка";
+            transactionsSheet.Cell(1, 3).Value = "Клиент";
+            transactionsSheet.Cell(1, 4).Value = "Тип";
+            transactionsSheet.Cell(1, 5).Value = "Сума";
+            transactionsSheet.Cell(1, 6).Value = "Описание";
+            transactionsSheet.Cell(1, 7).Value = "Създадена на";
+            transactionsSheet.Cell(1, 8).Value = "Свързана сметка";
+            transactionsSheet.Cell(1, 9).Value = "Свързан клиент";
 
             int transactionsRow = 2;
             foreach (TransactionDto transaction in transactions)
@@ -133,15 +133,15 @@ namespace BankAccountManager.Api.Controllers
             IReadOnlyCollection<ClientDto> clients = await this.clientService.GetAllAsync(cancellationToken);
 
             using XLWorkbook workbook = new XLWorkbook();
-            IXLWorksheet worksheet = workbook.Worksheets.Add("Clients");
+            IXLWorksheet worksheet = workbook.Worksheets.Add("Клиенти");
 
-            worksheet.Cell(1, 1).Value = "Id";
-            worksheet.Cell(1, 2).Value = "First Name";
-            worksheet.Cell(1, 3).Value = "Last Name";
-            worksheet.Cell(1, 4).Value = "Email";
-            worksheet.Cell(1, 5).Value = "Phone";
-            worksheet.Cell(1, 6).Value = "Created At";
-            worksheet.Cell(1, 7).Value = "Is Active";
+            worksheet.Cell(1, 1).Value = "Идентификатор";
+            worksheet.Cell(1, 2).Value = "Собствено име";
+            worksheet.Cell(1, 3).Value = "Фамилно име";
+            worksheet.Cell(1, 4).Value = "Имейл";
+            worksheet.Cell(1, 5).Value = "Телефон";
+            worksheet.Cell(1, 6).Value = "Създаден на";
+            worksheet.Cell(1, 7).Value = "Активен";
 
             int row = 2;
             foreach (ClientDto client in clients)
@@ -169,14 +169,14 @@ namespace BankAccountManager.Api.Controllers
             IReadOnlyCollection<AccountDto> accounts = await this.accountService.GetAllAsync(cancellationToken);
 
             using XLWorkbook workbook = new XLWorkbook();
-            IXLWorksheet worksheet = workbook.Worksheets.Add("Accounts");
+            IXLWorksheet worksheet = workbook.Worksheets.Add("Сметки");
 
-            worksheet.Cell(1, 1).Value = "Id";
-            worksheet.Cell(1, 2).Value = "Client";
-            worksheet.Cell(1, 3).Value = "Account Number";
-            worksheet.Cell(1, 4).Value = "Currency";
-            worksheet.Cell(1, 5).Value = "Balance";
-            worksheet.Cell(1, 6).Value = "Created At";
+            worksheet.Cell(1, 1).Value = "Идентификатор";
+            worksheet.Cell(1, 2).Value = "Клиент";
+            worksheet.Cell(1, 3).Value = "Номер на сметка";
+            worksheet.Cell(1, 4).Value = "Валута";
+            worksheet.Cell(1, 5).Value = "Наличност";
+            worksheet.Cell(1, 6).Value = "Създадена на";
 
             int row = 2;
             foreach (AccountDto account in accounts)
@@ -222,17 +222,17 @@ namespace BankAccountManager.Api.Controllers
             IReadOnlyCollection<TransactionDto> transactions = await this.transactionService.SearchAsync(request, cancellationToken);
 
             using XLWorkbook workbook = new XLWorkbook();
-            IXLWorksheet worksheet = workbook.Worksheets.Add("Transactions");
+            IXLWorksheet worksheet = workbook.Worksheets.Add("Транзакции");
 
-            worksheet.Cell(1, 1).Value = "Id";
-            worksheet.Cell(1, 2).Value = "Account";
-            worksheet.Cell(1, 3).Value = "Client";
-            worksheet.Cell(1, 4).Value = "Type";
-            worksheet.Cell(1, 5).Value = "Amount";
-            worksheet.Cell(1, 6).Value = "Description";
-            worksheet.Cell(1, 7).Value = "Created At";
-            worksheet.Cell(1, 8).Value = "Related Account Id";
-            worksheet.Cell(1, 9).Value = "Related Client Id";
+            worksheet.Cell(1, 1).Value = "Идентификатор";
+            worksheet.Cell(1, 2).Value = "Сметка";
+            worksheet.Cell(1, 3).Value = "Клиент";
+            worksheet.Cell(1, 4).Value = "Тип";
+            worksheet.Cell(1, 5).Value = "Сума";
+            worksheet.Cell(1, 6).Value = "Описание";
+            worksheet.Cell(1, 7).Value = "Създадена на";
+            worksheet.Cell(1, 8).Value = "Свързана сметка";
+            worksheet.Cell(1, 9).Value = "Свързан клиент";
 
             int row = 2;
             foreach (TransactionDto transaction in transactions)

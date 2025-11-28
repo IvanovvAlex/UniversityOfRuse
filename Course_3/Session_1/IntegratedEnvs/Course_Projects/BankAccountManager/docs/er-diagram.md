@@ -1,7 +1,7 @@
 ```mermaid
 erDiagram
   CLIENT {
-    int Id PK
+    guid Id PK
     string FirstName
     string LastName
     string Email
@@ -11,8 +11,8 @@ erDiagram
   }
 
   ACCOUNT {
-    int Id PK
-    int ClientId FK
+    guid Id PK
+    guid ClientId FK
     string AccountNumber
     string Currency
     decimal Balance
@@ -20,18 +20,18 @@ erDiagram
   }
 
   TRANSACTION {
-    int Id PK
-    int AccountId FK
+    guid Id PK
+    guid AccountId FK
     string TransactionType
     decimal Amount
     string Description
     datetime CreatedAt
-    int RelatedAccountId
-    int RelatedClientId
+    guid RelatedAccountId
+    guid RelatedClientId
   }
 
-  CLIENT ||--o{ ACCOUNT : "owns"
-  ACCOUNT ||--o{ TRANSACTION : "has"
+  CLIENT ||--o{ ACCOUNT : "притежава"
+  ACCOUNT ||--o{ TRANSACTION : "има"
 ```
 
 

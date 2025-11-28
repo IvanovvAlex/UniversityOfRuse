@@ -40,7 +40,7 @@ namespace BankAccountManager.Domain.Services
 
             if (request.Amount <= 0m)
             {
-                throw new InvalidOperationException("Amount must be positive.");
+                throw new InvalidOperationException("Сумата трябва да бъде положителна.");
             }
 
             account.Balance += request.Amount;
@@ -81,12 +81,12 @@ namespace BankAccountManager.Domain.Services
 
             if (request.Amount <= 0m)
             {
-                throw new InvalidOperationException("Amount must be positive.");
+                throw new InvalidOperationException("Сумата трябва да бъде положителна.");
             }
 
             if (account.Balance < request.Amount)
             {
-                throw new InvalidOperationException("Insufficient balance.");
+                throw new InvalidOperationException("Недостатъчна наличност по сметката.");
             }
 
             account.Balance -= request.Amount;
@@ -129,12 +129,12 @@ namespace BankAccountManager.Domain.Services
 
             if (request.Amount <= 0m)
             {
-                throw new InvalidOperationException("Amount must be positive.");
+                throw new InvalidOperationException("Сумата трябва да бъде положителна.");
             }
 
             if (sourceAccount.Balance < request.Amount)
             {
-                throw new InvalidOperationException("Insufficient balance.");
+                throw new InvalidOperationException("Недостатъчна наличност по сметката.");
             }
 
             sourceAccount.Balance -= request.Amount;

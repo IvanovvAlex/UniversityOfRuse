@@ -94,11 +94,10 @@ export default function TransactionsPage() {
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">
-            Transactions
+            Транзакции
           </h1>
           <p className="text-sm text-slate-300">
-            Browse and filter the transaction ledger, and export statements to
-            Excel.
+            Преглеждайте и филтрирайте регистъра на транзакциите и експортирайте извлечения към Excel.
           </p>
         </div>
         <button
@@ -106,7 +105,7 @@ export default function TransactionsPage() {
           onClick={handleExport}
           className="rounded bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
         >
-          Export to Excel
+          Експорт в Excel
         </button>
       </div>
 
@@ -121,7 +120,7 @@ export default function TransactionsPage() {
         className="grid gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm md:grid-cols-6"
       >
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Account</label>
+          <label className="text-xs uppercase text-slate-400">Сметка</label>
           <select
             value={accountId}
             onChange={(e) =>
@@ -129,7 +128,7 @@ export default function TransactionsPage() {
             }
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
           >
-            <option value="">All</option>
+            <option value="">Всички</option>
             {accounts.map((account) => (
               <option key={account.id} value={account.id}>
                 {account.accountNumber} ({account.clientName})
@@ -138,7 +137,7 @@ export default function TransactionsPage() {
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Client</label>
+          <label className="text-xs uppercase text-slate-400">Клиент</label>
           <select
             value={clientId}
             onChange={(e) =>
@@ -146,7 +145,7 @@ export default function TransactionsPage() {
             }
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
           >
-            <option value="">All</option>
+            <option value="">Всички</option>
             {clients.map((client) => (
               <option key={client.id} value={client.id}>
                 {client.firstName} {client.lastName}
@@ -155,7 +154,7 @@ export default function TransactionsPage() {
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">From</label>
+          <label className="text-xs uppercase text-slate-400">От дата</label>
           <input
             type="date"
             value={fromDate}
@@ -164,7 +163,7 @@ export default function TransactionsPage() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">To</label>
+          <label className="text-xs uppercase text-slate-400">До дата</label>
           <input
             type="date"
             value={toDate}
@@ -173,7 +172,7 @@ export default function TransactionsPage() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Type</label>
+          <label className="text-xs uppercase text-slate-400">Тип</label>
           <select
             value={transactionType}
             onChange={(e) =>
@@ -185,17 +184,17 @@ export default function TransactionsPage() {
             }
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
           >
-            <option value="">All</option>
-            <option value="Deposit">Deposit</option>
-            <option value="Withdrawal">Withdrawal</option>
-            <option value="TransferIn">Transfer In</option>
-            <option value="TransferOut">Transfer Out</option>
+            <option value="">Всички</option>
+            <option value="Deposit">Внасяне</option>
+            <option value="Withdrawal">Теглене</option>
+            <option value="TransferIn">Входящ превод</option>
+            <option value="TransferOut">Изходящ превод</option>
           </select>
         </div>
         <div className="flex flex-col gap-1 md:flex-row md:items-end md:gap-2">
           <div className="flex flex-1 flex-col gap-1">
             <label className="text-xs uppercase text-slate-400">
-              Amount min / max
+              Сума мин / макс
             </label>
             <div className="flex gap-2">
               <input
@@ -203,14 +202,14 @@ export default function TransactionsPage() {
                 value={minAmount}
                 onChange={(e) => setMinAmount(e.target.value)}
                 className="w-1/2 rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-                placeholder="Min"
+                placeholder="Мин"
               />
               <input
                 type="number"
                 value={maxAmount}
                 onChange={(e) => setMaxAmount(e.target.value)}
                 className="w-1/2 rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-                placeholder="Max"
+                placeholder="Макс"
               />
             </div>
           </div>
@@ -220,7 +219,7 @@ export default function TransactionsPage() {
               className="rounded bg-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-slate-600"
               disabled={loading}
             >
-              Search
+              Търсене
             </button>
             <button
               type="button"
@@ -239,7 +238,7 @@ export default function TransactionsPage() {
               className="hidden rounded border border-slate-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:bg-slate-800 md:inline-flex"
               disabled={loading}
             >
-              Reset
+              Нулиране
             </button>
           </div>
         </div>
@@ -249,12 +248,12 @@ export default function TransactionsPage() {
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-slate-800 bg-slate-900 text-xs uppercase text-slate-400">
             <tr>
-              <th className="px-3 py-2">Date</th>
-              <th className="px-3 py-2">Account</th>
-              <th className="px-3 py-2">Client</th>
-              <th className="px-3 py-2">Type</th>
-              <th className="px-3 py-2">Amount</th>
-              <th className="px-3 py-2">Description</th>
+              <th className="px-3 py-2">Дата</th>
+              <th className="px-3 py-2">Сметка</th>
+              <th className="px-3 py-2">Клиент</th>
+              <th className="px-3 py-2">Тип</th>
+              <th className="px-3 py-2">Сума</th>
+              <th className="px-3 py-2">Описание</th>
             </tr>
           </thead>
           <tbody>
@@ -280,7 +279,13 @@ export default function TransactionsPage() {
                           : "bg-slate-700/40 text-slate-200"
                     }`}
                   >
-                    {tx.transactionType}
+                    {tx.transactionType === "Deposit"
+                      ? "Внасяне"
+                      : tx.transactionType === "Withdrawal"
+                        ? "Теглене"
+                        : tx.transactionType === "TransferIn"
+                          ? "Входящ превод"
+                          : "Изходящ превод"}
                   </span>
                 </td>
                 <td className="px-3 py-2 text-emerald-300">
@@ -295,7 +300,7 @@ export default function TransactionsPage() {
                   colSpan={6}
                   className="px-3 py-6 text-center text-sm text-slate-400"
                 >
-                  No transactions found.
+                  Няма намерени транзакции.
                 </td>
               </tr>
             )}
@@ -305,7 +310,7 @@ export default function TransactionsPage() {
                   colSpan={6}
                   className="px-3 py-6 text-center text-sm text-slate-400"
                 >
-                  Loading...
+                  Зареждане...
                 </td>
               </tr>
             )}

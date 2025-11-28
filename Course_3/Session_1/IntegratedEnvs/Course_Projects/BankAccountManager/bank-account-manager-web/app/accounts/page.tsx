@@ -98,7 +98,7 @@ export default function AccountsPage() {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     if (form.clientId === "") {
-      setError("Please select a client.");
+      setError("Моля, изберете клиент.");
       return;
     }
     setLoading(true);
@@ -132,7 +132,7 @@ export default function AccountsPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!window.confirm("Are you sure you want to delete this account?")) {
+    if (!window.confirm("Сигурни ли сте, че искате да изтриете тази сметка?")) {
       return;
     }
     setLoading(true);
@@ -151,9 +151,9 @@ export default function AccountsPage() {
     <section className="flex w-full flex-col gap-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Accounts</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Сметки</h1>
           <p className="text-sm text-slate-300">
-            Manage bank accounts, balances, and export account lists to Excel.
+            Управлявайте банкови сметки, наличности и експортирайте списъци към Excel.
           </p>
         </div>
         <button
@@ -161,7 +161,7 @@ export default function AccountsPage() {
           onClick={downloadAccountsExcel}
           className="rounded bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
         >
-          Export to Excel
+          Експорт в Excel
         </button>
       </div>
 
@@ -176,13 +176,13 @@ export default function AccountsPage() {
         className="grid gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm md:grid-cols-4"
       >
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Client</label>
+          <label className="text-xs uppercase text-slate-400">Клиент</label>
           <select
             value={searchClientId}
             onChange={(e) => setSearchClientId(e.target.value as "" | string)}
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
           >
-            <option value="">All</option>
+            <option value="">Всички</option>
             {clients.map((client) => (
               <option key={client.id} value={client.id}>
                 {client.firstName} {client.lastName}
@@ -191,23 +191,21 @@ export default function AccountsPage() {
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">
-            Account number
-          </label>
+          <label className="text-xs uppercase text-slate-400">Номер на сметка</label>
           <input
             value={searchAccountNumber}
             onChange={(e) => setSearchAccountNumber(e.target.value)}
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-            placeholder="Contains..."
+            placeholder="Съдържа..."
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Currency</label>
+          <label className="text-xs uppercase text-slate-400">Валута</label>
           <input
             value={searchCurrency}
             onChange={(e) => setSearchCurrency(e.target.value)}
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-            placeholder="e.g. EUR"
+            placeholder="напр. BGN"
           />
         </div>
         <div className="flex items-end gap-2">
@@ -216,7 +214,7 @@ export default function AccountsPage() {
             className="w-full rounded bg-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-slate-600"
             disabled={loading}
           >
-            Search
+            Търсене
           </button>
           <button
             type="button"
@@ -229,7 +227,7 @@ export default function AccountsPage() {
             className="hidden rounded border border-slate-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:bg-slate-800 md:inline-flex"
             disabled={loading}
           >
-            Reset
+            Нулиране
           </button>
         </div>
       </form>
@@ -239,7 +237,7 @@ export default function AccountsPage() {
         className="grid gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm md:grid-cols-4"
       >
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Client</label>
+          <label className="text-xs uppercase text-slate-400">Клиент</label>
           <select
             value={form.clientId}
             onChange={(e) =>
@@ -251,7 +249,7 @@ export default function AccountsPage() {
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
             required
           >
-            <option value="">Select client</option>
+            <option value="">Изберете клиент</option>
             {clients.map((client) => (
               <option key={client.id} value={client.id}>
                 {client.firstName} {client.lastName}
@@ -260,9 +258,7 @@ export default function AccountsPage() {
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">
-            Account number
-          </label>
+          <label className="text-xs uppercase text-slate-400">Номер на сметка</label>
           <input
             value={form.accountNumber}
             onChange={(e) =>
@@ -274,7 +270,7 @@ export default function AccountsPage() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Currency</label>
+          <label className="text-xs uppercase text-slate-400">Валута</label>
           <input
             value={form.currency}
             onChange={(e) =>
@@ -290,7 +286,7 @@ export default function AccountsPage() {
             className="rounded bg-emerald-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-emerald-500"
             disabled={loading}
           >
-            {isEditing ? "Save" : "Create"}
+            {isEditing ? "Запис" : "Създаване"}
           </button>
           {isEditing && (
             <button
@@ -299,7 +295,7 @@ export default function AccountsPage() {
               className="rounded border border-slate-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:bg-slate-800"
               disabled={loading}
             >
-              Cancel
+              Отказ
             </button>
           )}
         </div>
@@ -309,12 +305,12 @@ export default function AccountsPage() {
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-slate-800 bg-slate-900 text-xs uppercase text-slate-400">
             <tr>
-              <th className="px-3 py-2">Account</th>
-              <th className="px-3 py-2">Client</th>
-              <th className="px-3 py-2">Currency</th>
-              <th className="px-3 py-2">Balance</th>
-              <th className="px-3 py-2">Created</th>
-              <th className="px-3 py-2 text-right">Actions</th>
+              <th className="px-3 py-2">Сметка</th>
+              <th className="px-3 py-2">Клиент</th>
+              <th className="px-3 py-2">Валута</th>
+              <th className="px-3 py-2">Наличност</th>
+              <th className="px-3 py-2">Създадена</th>
+              <th className="px-3 py-2 text-right">Действия</th>
             </tr>
           </thead>
           <tbody>
@@ -344,14 +340,14 @@ export default function AccountsPage() {
                     onClick={() => startEdit(account)}
                     className="mr-2 rounded border border-slate-600 px-2 py-1 text-xs text-slate-100 hover:bg-slate-800"
                   >
-                    Edit
+                    Редакция
                   </button>
                   <button
                     type="button"
                     onClick={() => handleDelete(account.id)}
                     className="rounded border border-red-700 px-2 py-1 text-xs text-red-200 hover:bg-red-900"
                   >
-                    Delete
+                    Изтриване
                   </button>
                 </td>
               </tr>
@@ -362,7 +358,7 @@ export default function AccountsPage() {
                   colSpan={6}
                   className="px-3 py-6 text-center text-sm text-slate-400"
                 >
-                  No accounts found.
+                  Няма намерени сметки.
                 </td>
               </tr>
             )}
@@ -372,7 +368,7 @@ export default function AccountsPage() {
                   colSpan={6}
                   className="px-3 py-6 text-center text-sm text-slate-400"
                 >
-                  Loading...
+                  Зареждане...
                 </td>
               </tr>
             )}

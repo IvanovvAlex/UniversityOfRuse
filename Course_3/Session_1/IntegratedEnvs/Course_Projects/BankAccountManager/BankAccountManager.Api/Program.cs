@@ -49,6 +49,7 @@ using (IServiceScope scope = app.Services.CreateScope())
 {
     BankAccountManagerDbContext dbContext = scope.ServiceProvider.GetRequiredService<BankAccountManagerDbContext>();
     dbContext.Database.EnsureCreated();
+    DatabaseSeeder.Seed(dbContext);
 }
 
 app.UseCors("AllowAll");

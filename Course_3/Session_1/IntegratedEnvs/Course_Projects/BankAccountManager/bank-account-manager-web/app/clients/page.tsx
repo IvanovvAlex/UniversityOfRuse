@@ -129,7 +129,7 @@ export default function ClientsPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!window.confirm("Are you sure you want to delete this client?")) {
+    if (!window.confirm("Сигурни ли сте, че искате да изтриете този клиент?")) {
       return;
     }
     setLoading(true);
@@ -148,9 +148,9 @@ export default function ClientsPage() {
     <section className="flex w-full flex-col gap-6">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Clients</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Клиенти</h1>
           <p className="text-sm text-slate-300">
-            Manage bank clients, search by criteria, and export to Excel.
+            Управлявайте банкови клиенти, търсете по критерии и експортирайте към Excel.
           </p>
         </div>
         <button
@@ -158,7 +158,7 @@ export default function ClientsPage() {
           onClick={downloadClientsExcel}
           className="rounded bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
         >
-          Export to Excel
+          Експорт в Excel
         </button>
       </div>
 
@@ -173,30 +173,30 @@ export default function ClientsPage() {
         className="grid gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm md:grid-cols-4"
       >
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Name</label>
+          <label className="text-xs uppercase text-slate-400">Име</label>
           <input
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-            placeholder="First or last name"
+            placeholder="Собствено или фамилно име"
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Email</label>
+          <label className="text-xs uppercase text-slate-400">Имейл</label>
           <input
             value={searchEmail}
             onChange={(e) => setSearchEmail(e.target.value)}
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-            placeholder="Email"
+            placeholder="Имейл"
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Phone</label>
+          <label className="text-xs uppercase text-slate-400">Телефон</label>
           <input
             value={searchPhone}
             onChange={(e) => setSearchPhone(e.target.value)}
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-            placeholder="Phone"
+            placeholder="Телефон"
           />
         </div>
         <div className="flex items-end gap-2">
@@ -205,7 +205,7 @@ export default function ClientsPage() {
             className="w-full rounded bg-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-slate-600"
             disabled={loading}
           >
-            Search
+            Търсене
           </button>
           <button
             type="button"
@@ -218,7 +218,7 @@ export default function ClientsPage() {
             className="hidden rounded border border-slate-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:bg-slate-800 md:inline-flex"
             disabled={loading}
           >
-            Reset
+            Нулиране
           </button>
         </div>
       </form>
@@ -228,9 +228,7 @@ export default function ClientsPage() {
         className="grid gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm md:grid-cols-5"
       >
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">
-            First name
-          </label>
+          <label className="text-xs uppercase text-slate-400">Собствено име</label>
           <input
             value={form.firstName}
             onChange={(e) =>
@@ -241,7 +239,7 @@ export default function ClientsPage() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Last name</label>
+          <label className="text-xs uppercase text-slate-400">Фамилно име</label>
           <input
             value={form.lastName}
             onChange={(e) =>
@@ -252,7 +250,7 @@ export default function ClientsPage() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Email</label>
+          <label className="text-xs uppercase text-slate-400">Имейл</label>
           <input
             type="email"
             value={form.email}
@@ -264,7 +262,7 @@ export default function ClientsPage() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Phone</label>
+          <label className="text-xs uppercase text-slate-400">Телефон</label>
           <input
             value={form.phone}
             onChange={(e) =>
@@ -285,7 +283,7 @@ export default function ClientsPage() {
                 }
                 className="h-3 w-3 rounded border-slate-600 bg-slate-950"
               />
-              Active
+              Активен
             </label>
           )}
           <div className="ml-auto flex gap-2">
@@ -294,7 +292,7 @@ export default function ClientsPage() {
               className="rounded bg-emerald-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-emerald-500"
               disabled={loading}
             >
-              {isEditing ? "Save" : "Create"}
+              {isEditing ? "Запис" : "Създаване"}
             </button>
             {isEditing && (
               <button
@@ -303,7 +301,7 @@ export default function ClientsPage() {
                 className="rounded border border-slate-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:bg-slate-800"
                 disabled={loading}
               >
-                Cancel
+                Отказ
               </button>
             )}
           </div>
@@ -314,12 +312,12 @@ export default function ClientsPage() {
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-slate-800 bg-slate-900 text-xs uppercase text-slate-400">
             <tr>
-              <th className="px-3 py-2">Name</th>
-              <th className="px-3 py-2">Email</th>
-              <th className="px-3 py-2">Phone</th>
-              <th className="px-3 py-2">Created</th>
-              <th className="px-3 py-2">Status</th>
-              <th className="px-3 py-2 text-right">Actions</th>
+              <th className="px-3 py-2">Име</th>
+              <th className="px-3 py-2">Имейл</th>
+              <th className="px-3 py-2">Телефон</th>
+              <th className="px-3 py-2">Създаден</th>
+              <th className="px-3 py-2">Статус</th>
+              <th className="px-3 py-2 text-right">Действия</th>
             </tr>
           </thead>
           <tbody>
@@ -346,7 +344,7 @@ export default function ClientsPage() {
                         : "bg-slate-700/40 text-slate-300"
                     }`}
                   >
-                    {client.isActive ? "Active" : "Inactive"}
+                    {client.isActive ? "Активен" : "Неактивен"}
                   </span>
                 </td>
                 <td className="px-3 py-2 text-right">
@@ -355,14 +353,14 @@ export default function ClientsPage() {
                     onClick={() => startEdit(client)}
                     className="mr-2 rounded border border-slate-600 px-2 py-1 text-xs text-slate-100 hover:bg-slate-800"
                   >
-                    Edit
+                    Редакция
                   </button>
                   <button
                     type="button"
                     onClick={() => handleDelete(client.id)}
                     className="rounded border border-red-700 px-2 py-1 text-xs text-red-200 hover:bg-red-900"
                   >
-                    Delete
+                    Изтриване
                   </button>
                 </td>
               </tr>
@@ -373,7 +371,7 @@ export default function ClientsPage() {
                   colSpan={6}
                   className="px-3 py-6 text-center text-sm text-slate-400"
                 >
-                  No clients found.
+                  Няма намерени клиенти.
                 </td>
               </tr>
             )}
@@ -383,7 +381,7 @@ export default function ClientsPage() {
                   colSpan={6}
                   className="px-3 py-6 text-center text-sm text-slate-400"
                 >
-                  Loading...
+                  Зареждане...
                 </td>
               </tr>
             )}

@@ -75,7 +75,7 @@ export default function OperationsPage() {
   async function handleDeposit(event: FormEvent) {
     event.preventDefault();
     if (depositAccountId === "") {
-      setError("Please select an account for deposit.");
+      setError("Моля, изберете сметка за внасяне.");
       return;
     }
     setLoading(true);
@@ -89,7 +89,7 @@ export default function OperationsPage() {
       };
       const result = await deposit(payload);
       setMessage(
-        `Deposit successful. New balance for ${result.accountNumber}: ${result.balance.toFixed(2)}`,
+        `Внасянето е успешно. Нова наличност по сметка ${result.accountNumber}: ${result.balance.toFixed(2)}`,
       );
       await loadData();
       setDepositAmount("");
@@ -104,7 +104,7 @@ export default function OperationsPage() {
   async function handleWithdraw(event: FormEvent) {
     event.preventDefault();
     if (withdrawAccountId === "") {
-      setError("Please select an account for withdrawal.");
+      setError("Моля, изберете сметка за теглене.");
       return;
     }
     setLoading(true);
@@ -118,7 +118,7 @@ export default function OperationsPage() {
       };
       const result = await withdraw(payload);
       setMessage(
-        `Withdrawal successful. New balance for ${result.accountNumber}: ${result.balance.toFixed(2)}`,
+        `Тегленето е успешно. Нова наличност по сметка ${result.accountNumber}: ${result.balance.toFixed(2)}`,
       );
       await loadData();
       setWithdrawAmount("");
@@ -133,7 +133,7 @@ export default function OperationsPage() {
   async function handleTransfer(event: FormEvent) {
     event.preventDefault();
     if (sourceAccountId === "" || destinationAccountId === "") {
-      setError("Please select both source and destination accounts.");
+      setError("Моля, изберете както изходна, така и целева сметка.");
       return;
     }
     setLoading(true);
@@ -148,7 +148,7 @@ export default function OperationsPage() {
       };
       const result = await transfer(payload);
       setMessage(
-        `Transfer successful. Source balance: ${result.sourceAccount.balance.toFixed(2)}, destination balance: ${result.destinationAccount.balance.toFixed(2)}.`,
+        `Преводът е успешен. Наличност по изходна сметка: ${result.sourceAccount.balance.toFixed(2)}, наличност по целева сметка: ${result.destinationAccount.balance.toFixed(2)}.`,
       );
       await loadData();
       setTransferAmount("");
@@ -167,9 +167,9 @@ export default function OperationsPage() {
   return (
     <section className="flex w-full flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Operations</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Операции</h1>
         <p className="text-sm text-slate-300">
-          Perform deposits, withdrawals, and transfers between client accounts.
+          Извършвайте внасяния, тегления и преводи между клиентски сметки.
         </p>
       </div>
 
@@ -191,7 +191,7 @@ export default function OperationsPage() {
           className="flex flex-col gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm"
         >
           <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-200">
-            Deposit
+            Внасяне
           </h2>
           <select
             value={depositAccountId}
@@ -203,7 +203,7 @@ export default function OperationsPage() {
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
             required
           >
-            <option value="">Select account</option>
+            <option value="">Изберете сметка</option>
             {accounts.map((account) => (
               <option key={account.id} value={account.id}>
                 {account.accountNumber} ({account.clientName})
@@ -216,14 +216,14 @@ export default function OperationsPage() {
             step="0.01"
             value={depositAmount}
             onChange={(e) => setDepositAmount(e.target.value)}
-            placeholder="Amount"
+            placeholder="Сума"
             required
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
           />
           <input
             value={depositDescription}
             onChange={(e) => setDepositDescription(e.target.value)}
-            placeholder="Description"
+            placeholder="Описание"
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
           />
           <button
@@ -231,7 +231,7 @@ export default function OperationsPage() {
             className="mt-1 rounded bg-emerald-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-emerald-500"
             disabled={loading}
           >
-            Deposit
+            Внасяне
           </button>
         </form>
 
@@ -240,7 +240,7 @@ export default function OperationsPage() {
           className="flex flex-col gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm"
         >
           <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-200">
-            Withdraw
+            Теглене
           </h2>
           <select
             value={withdrawAccountId}
@@ -252,7 +252,7 @@ export default function OperationsPage() {
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
             required
           >
-            <option value="">Select account</option>
+            <option value="">Изберете сметка</option>
             {accounts.map((account) => (
               <option key={account.id} value={account.id}>
                 {account.accountNumber} ({account.clientName})
@@ -265,14 +265,14 @@ export default function OperationsPage() {
             step="0.01"
             value={withdrawAmount}
             onChange={(e) => setWithdrawAmount(e.target.value)}
-            placeholder="Amount"
+            placeholder="Сума"
             required
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
           />
           <input
             value={withdrawDescription}
             onChange={(e) => setWithdrawDescription(e.target.value)}
-            placeholder="Description"
+            placeholder="Описание"
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
           />
           <button
@@ -280,7 +280,7 @@ export default function OperationsPage() {
             className="mt-1 rounded bg-red-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-red-600"
             disabled={loading}
           >
-            Withdraw
+            Теглене
           </button>
         </form>
 
@@ -289,12 +289,12 @@ export default function OperationsPage() {
           className="flex flex-col gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm"
         >
           <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-200">
-            Transfer
+            Превод
           </h2>
           <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col gap-1">
               <label className="text-xs uppercase text-slate-400">
-                From client
+                От клиент
               </label>
               <select
                 value={sourceClientId}
@@ -306,7 +306,7 @@ export default function OperationsPage() {
                 }}
                 className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs focus:border-emerald-500 focus:outline-none"
               >
-                <option value="">Any</option>
+                <option value="">Всеки</option>
                 {clients.map((client) => (
                   <option key={client.id} value={client.id}>
                     {client.firstName} {client.lastName}
@@ -316,7 +316,7 @@ export default function OperationsPage() {
             </div>
             <div className="flex flex-col gap-1">
               <label className="text-xs uppercase text-slate-400">
-                From account
+                От сметка
               </label>
               <select
                 value={sourceAccountId}
@@ -328,7 +328,7 @@ export default function OperationsPage() {
                 className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs focus:border-emerald-500 focus:outline-none"
                 required
               >
-                <option value="">Select</option>
+                <option value="">Изберете</option>
                 {sourceAccounts.map((account) => (
                   <option key={account.id} value={account.id}>
                     {account.accountNumber} ({account.clientName})
@@ -338,7 +338,7 @@ export default function OperationsPage() {
             </div>
             <div className="flex flex-col gap-1">
               <label className="text-xs uppercase text-slate-400">
-                To client
+                До клиент
               </label>
               <select
                 value={destinationClientId}
@@ -350,7 +350,7 @@ export default function OperationsPage() {
                 }}
                 className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs focus:border-emerald-500 focus:outline-none"
               >
-                <option value="">Any</option>
+                <option value="">Всеки</option>
                 {clients.map((client) => (
                   <option key={client.id} value={client.id}>
                     {client.firstName} {client.lastName}
@@ -360,7 +360,7 @@ export default function OperationsPage() {
             </div>
             <div className="flex flex-col gap-1">
               <label className="text-xs uppercase text-slate-400">
-                To account
+                До сметка
               </label>
               <select
                 value={destinationAccountId}
@@ -372,7 +372,7 @@ export default function OperationsPage() {
                 className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs focus:border-emerald-500 focus:outline-none"
                 required
               >
-                <option value="">Select</option>
+                <option value="">Изберете</option>
                 {destinationAccounts.map((account) => (
                   <option key={account.id} value={account.id}>
                     {account.accountNumber} ({account.clientName})
@@ -387,14 +387,14 @@ export default function OperationsPage() {
             step="0.01"
             value={transferAmount}
             onChange={(e) => setTransferAmount(e.target.value)}
-            placeholder="Amount"
+            placeholder="Сума"
             required
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
           />
           <input
             value={transferDescription}
             onChange={(e) => setTransferDescription(e.target.value)}
-            placeholder="Description"
+            placeholder="Описание"
             className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
           />
           <button
@@ -402,7 +402,7 @@ export default function OperationsPage() {
             className="mt-1 rounded bg-sky-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-sky-500"
             disabled={loading}
           >
-            Transfer
+            Превод
           </button>
         </form>
       </div>

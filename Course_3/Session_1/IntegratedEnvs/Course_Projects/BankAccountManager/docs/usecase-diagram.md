@@ -1,32 +1,32 @@
 ```mermaid
 usecaseDiagram
 
-actor "Bank Clerk" as Clerk
+actor "Банков служител" as Clerk
 
-rectangle BankAccountManager {
-  Clerk --> (Manage Clients)
-  Clerk --> (Manage Accounts)
-  Clerk --> (View Transactions)
-  Clerk --> (Perform Deposit)
-  Clerk --> (Perform Withdraw)
-  Clerk --> (Perform Transfer)
-  Clerk --> (Export Reports)
+rectangle "BankAccountManager" {
+  Clerk --> (Управление на клиенти)
+  Clerk --> (Управление на сметки)
+  Clerk --> (Преглед на транзакции)
+  Clerk --> (Извършване на внасяне)
+  Clerk --> (Извършване на теглене)
+  Clerk --> (Превод между сметки)
+  Clerk --> (Експорт на отчети)
 
-  (Manage Clients) --> (Create Client)
-  (Manage Clients) --> (Update Client)
-  (Manage Clients) --> (Delete Client)
-  (Manage Clients) --> (Search Clients)
+  (Управление на клиенти) --> (Създаване на клиент)
+  (Управление на клиенти) --> (Актуализиране на клиент)
+  (Управление на клиенти) --> (Изтриване на клиент)
+  (Управление на клиенти) --> (Търсене на клиенти)
 
-  (Manage Accounts) --> (Create Account)
-  (Manage Accounts) --> (Update Account)
-  (Manage Accounts) --> (Delete Account)
-  (Manage Accounts) --> (Search Accounts)
+  (Управление на сметки) --> (Създаване на сметка)
+  (Управление на сметки) --> (Актуализиране на сметка)
+  (Управление на сметки) --> (Изтриване на сметка)
+  (Управление на сметки) --> (Търсене на сметки)
 
-  (View Transactions) --> (Search Transactions)
+  (Преглед на транзакции) --> (Търсене на транзакции)
 
-  (Export Reports) --> (Export Clients Excel)
-  (Export Reports) --> (Export Accounts Excel)
-  (Export Reports) --> (Export Transactions Excel)
+  (Експорт на отчети) --> (Експорт на клиенти в Excel)
+  (Експорт на отчети) --> (Експорт на сметки в Excel)
+  (Експорт на отчети) --> (Експорт на транзакции в Excel)
 }
 ```
 
