@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\BankAccountManager.Data\BankAccountManager.Data.csproj" />
+    <ProjectReference Include="..\BankAccountManager.Common\BankAccountManager.Common.csproj" />
+    <ProjectReference Include="..\BankAccountManager.Core\BankAccountManager.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

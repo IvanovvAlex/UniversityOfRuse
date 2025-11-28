@@ -1,0 +1,6 @@
+@BankAccountManager.Api_HostAddress = http://localhost:0
+
+GET {{BankAccountManager.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
