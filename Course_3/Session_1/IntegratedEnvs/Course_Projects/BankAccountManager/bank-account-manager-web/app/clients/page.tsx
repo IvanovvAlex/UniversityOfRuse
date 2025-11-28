@@ -38,6 +38,8 @@ type ClientFormState = {
   isActive: boolean;
 };
 
+type ClientSortField = "name" | "email" | "phone" | "createdAt" | "status";
+
 export default function ClientsPage() {
   const [clients, setClients] = useState<ClientDto[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -56,6 +58,77 @@ export default function ClientsPage() {
   const toast = useToast();
 
   const isEditing: boolean = useMemo(() => form.id !== undefined, [form.id]);
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const pageSize = 10;
+  const [sortField, setSortField] = useState<ClientSortField>("createdAt");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [clients]);
+
+  function handleSort(field: ClientSortField) {
+    setCurrentPage(1);
+    setSortField((prevField) => {
+      if (prevField === field) {
+        setSortDirection((prevDir) => (prevDir === "asc" ? "desc" : "asc"));
+        return prevField;
+      }
+      setSortDirection("asc");
+      return field;
+    });
+  }
+
+  const sortedClients = useMemo(() => {
+    const data = [...clients];
+    data.sort((a, b) => {
+      let aValue: string | number | boolean = "";
+      let bValue: string | number | boolean = "";
+      if (sortField === "name") {
+        aValue = `${a.firstName} ${a.lastName}`.toLowerCase();
+        bValue = `${b.firstName} ${b.lastName}`.toLowerCase();
+      } else if (sortField === "email") {
+        aValue = a.email.toLowerCase();
+        bValue = b.email.toLowerCase();
+      } else if (sortField === "phone") {
+        aValue = a.phone.toLowerCase();
+        bValue = b.phone.toLowerCase();
+      } else if (sortField === "createdAt") {
+        aValue = new Date(a.createdAt).getTime();
+        bValue = new Date(b.createdAt).getTime();
+      } else {
+        aValue = a.isActive;
+        bValue = b.isActive;
+      }
+
+      if (aValue < bValue) {
+        return sortDirection === "asc" ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortDirection === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+    return data;
+  }, [clients, sortField, sortDirection]);
+
+  const totalPages = Math.max(1, Math.ceil(sortedClients.length / pageSize));
+  const currentPageSafe = Math.min(currentPage, totalPages);
+  const startIndex = (currentPageSafe - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const pageItems = sortedClients.slice(startIndex, endIndex);
+
+  function renderSortIndicator(field: ClientSortField) {
+    if (sortField !== field) {
+      return null;
+    }
+    return (
+      <span className="text-[10px] text-slate-400">
+        {sortDirection === "asc" ? "▲" : "▼"}
+      </span>
+    );
+  }
 
   async function loadClients() {
     setLoading(true);
@@ -343,16 +416,56 @@ export default function ClientsPage() {
         <Table>
           <TableHead>
             <tr>
-              <TableHeaderCell className="px-4 py-2">Име</TableHeaderCell>
-              <TableHeaderCell className="px-4 py-2">Имейл</TableHeaderCell>
-              <TableHeaderCell className="px-4 py-2">Телефон</TableHeaderCell>
-              <TableHeaderCell className="px-4 py-2">Създаден</TableHeaderCell>
-              <TableHeaderCell className="px-4 py-2">Статус</TableHeaderCell>
+              <TableHeaderCell
+                className="px-4 py-2 cursor-pointer select-none"
+                onClick={() => handleSort("name")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Име
+                  {renderSortIndicator("name")}
+                </span>
+              </TableHeaderCell>
+              <TableHeaderCell
+                className="px-4 py-2 cursor-pointer select-none"
+                onClick={() => handleSort("email")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Имейл
+                  {renderSortIndicator("email")}
+                </span>
+              </TableHeaderCell>
+              <TableHeaderCell
+                className="px-4 py-2 cursor-pointer select-none"
+                onClick={() => handleSort("phone")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Телефон
+                  {renderSortIndicator("phone")}
+                </span>
+              </TableHeaderCell>
+              <TableHeaderCell
+                className="px-4 py-2 cursor-pointer select-none"
+                onClick={() => handleSort("createdAt")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Създаден
+                  {renderSortIndicator("createdAt")}
+                </span>
+              </TableHeaderCell>
+              <TableHeaderCell
+                className="px-4 py-2 cursor-pointer select-none"
+                onClick={() => handleSort("status")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Статус
+                  {renderSortIndicator("status")}
+                </span>
+              </TableHeaderCell>
               <TableHeaderCell className="px-4 py-2 text-right">Действия</TableHeaderCell>
             </tr>
           </TableHead>
           <TableBody>
-            {clients.map((client) => (
+            {pageItems.map((client) => (
               <TableRow key={client.id}>
                 <TableCell className="px-4 py-2">
                   <div className="font-medium">
@@ -420,6 +533,40 @@ export default function ClientsPage() {
           </TableBody>
         </Table>
       </TableWrapper>
+      <div className="flex items-center justify-between gap-3 text-xs text-slate-600">
+        <div>
+          Показани{" "}
+          <span className="font-semibold">
+            {clients.length === 0 ? 0 : startIndex + 1}–{Math.min(endIndex, sortedClients.length)}
+          </span>{" "}
+          от{" "}
+          <span className="font-semibold">
+            {sortedClients.length}
+          </span>{" "}
+          клиенти
+        </div>
+        <div className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-1 py-0.5 shadow-sm">
+          <button
+            type="button"
+            onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+            disabled={currentPageSafe === 1}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            ‹
+          </button>
+          <span className="px-1 text-[11px] font-medium">
+            Стр. {currentPageSafe} от {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+            disabled={currentPageSafe === totalPages}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            ›
+          </button>
+        </div>
+      </div>
     </section>
   );
 }

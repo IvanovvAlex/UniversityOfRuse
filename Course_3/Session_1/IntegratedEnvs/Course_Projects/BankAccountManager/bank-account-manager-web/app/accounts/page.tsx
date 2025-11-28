@@ -39,6 +39,8 @@ type AccountFormState = {
   currency: string;
 };
 
+type AccountSortField = "accountNumber" | "clientName" | "currency" | "balance" | "createdAt";
+
 export default function AccountsPage() {
   const [accounts, setAccounts] = useState<AccountDto[]>([]);
   const [clients, setClients] = useState<ClientDto[]>([]);
@@ -56,6 +58,77 @@ export default function AccountsPage() {
   const toast = useToast();
 
   const isEditing: boolean = useMemo(() => form.id !== undefined, [form.id]);
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const pageSize = 10;
+  const [sortField, setSortField] = useState<AccountSortField>("accountNumber");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [accounts]);
+
+  function handleSort(field: AccountSortField) {
+    setCurrentPage(1);
+    setSortField((prevField) => {
+      if (prevField === field) {
+        setSortDirection((prevDir) => (prevDir === "asc" ? "desc" : "asc"));
+        return prevField;
+      }
+      setSortDirection("asc");
+      return field;
+    });
+  }
+
+  const sortedAccounts = useMemo(() => {
+    const data = [...accounts];
+    data.sort((a, b) => {
+      let aValue: string | number = "";
+      let bValue: string | number = "";
+      if (sortField === "accountNumber") {
+        aValue = a.accountNumber.toLowerCase();
+        bValue = b.accountNumber.toLowerCase();
+      } else if (sortField === "clientName") {
+        aValue = a.clientName.toLowerCase();
+        bValue = b.clientName.toLowerCase();
+      } else if (sortField === "currency") {
+        aValue = a.currency.toLowerCase();
+        bValue = b.currency.toLowerCase();
+      } else if (sortField === "balance") {
+        aValue = a.balance;
+        bValue = b.balance;
+      } else {
+        aValue = new Date(a.createdAt).getTime();
+        bValue = new Date(b.createdAt).getTime();
+      }
+
+      if (aValue < bValue) {
+        return sortDirection === "asc" ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortDirection === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+    return data;
+  }, [accounts, sortField, sortDirection]);
+
+  const totalPages = Math.max(1, Math.ceil(sortedAccounts.length / pageSize));
+  const currentPageSafe = Math.min(currentPage, totalPages);
+  const startIndex = (currentPageSafe - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const pageItems = sortedAccounts.slice(startIndex, endIndex);
+
+  function renderSortIndicator(field: AccountSortField) {
+    if (sortField !== field) {
+      return null;
+    }
+    return (
+      <span className="text-[10px] text-slate-400">
+        {sortDirection === "asc" ? "▲" : "▼"}
+      </span>
+    );
+  }
 
   async function loadData() {
     setLoading(true);
@@ -339,16 +412,56 @@ export default function AccountsPage() {
         <Table>
           <TableHead>
             <tr>
-              <TableHeaderCell>Сметка</TableHeaderCell>
-              <TableHeaderCell>Клиент</TableHeaderCell>
-              <TableHeaderCell>Валута</TableHeaderCell>
-              <TableHeaderCell>Наличност</TableHeaderCell>
-              <TableHeaderCell>Създадена</TableHeaderCell>
+              <TableHeaderCell
+                className="cursor-pointer select-none"
+                onClick={() => handleSort("accountNumber")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Сметка
+                  {renderSortIndicator("accountNumber")}
+                </span>
+              </TableHeaderCell>
+              <TableHeaderCell
+                className="cursor-pointer select-none"
+                onClick={() => handleSort("clientName")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Клиент
+                  {renderSortIndicator("clientName")}
+                </span>
+              </TableHeaderCell>
+              <TableHeaderCell
+                className="cursor-pointer select-none"
+                onClick={() => handleSort("currency")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Валута
+                  {renderSortIndicator("currency")}
+                </span>
+              </TableHeaderCell>
+              <TableHeaderCell
+                className="cursor-pointer select-none"
+                onClick={() => handleSort("balance")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Наличност
+                  {renderSortIndicator("balance")}
+                </span>
+              </TableHeaderCell>
+              <TableHeaderCell
+                className="cursor-pointer select-none"
+                onClick={() => handleSort("createdAt")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Създадена
+                  {renderSortIndicator("createdAt")}
+                </span>
+              </TableHeaderCell>
               <TableHeaderCell className="text-right">Действия</TableHeaderCell>
             </tr>
           </TableHead>
           <TableBody>
-            {accounts.map((account) => (
+            {pageItems.map((account) => (
               <TableRow key={account.id}>
                 <TableCell className="font-mono text-sm">
                   {account.accountNumber}
@@ -406,6 +519,40 @@ export default function AccountsPage() {
           </TableBody>
         </Table>
       </TableWrapper>
+      <div className="flex items-center justify-between gap-3 text-xs text-slate-600">
+        <div>
+          Показани{" "}
+          <span className="font-semibold">
+            {accounts.length === 0 ? 0 : startIndex + 1}–{Math.min(endIndex, sortedAccounts.length)}
+          </span>{" "}
+          от{" "}
+          <span className="font-semibold">
+            {sortedAccounts.length}
+          </span>{" "}
+          сметки
+        </div>
+        <div className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-1 py-0.5 shadow-sm">
+          <button
+            type="button"
+            onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+            disabled={currentPageSafe === 1}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            ‹
+          </button>
+          <span className="px-1 text-[11px] font-medium">
+            Стр. {currentPageSafe} от {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+            disabled={currentPageSafe === totalPages}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            ›
+          </button>
+        </div>
+      </div>
     </section>
   );
 }

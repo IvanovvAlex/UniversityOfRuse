@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
   AccountDto,
   ClientDto,
@@ -29,6 +29,13 @@ import {
 import { Spinner } from "../../components/ui/spinner";
 import { useToast } from "../../components/ui/toast";
 
+type TransactionSortField =
+  | "createdAt"
+  | "accountNumber"
+  | "clientName"
+  | "transactionType"
+  | "amount";
+
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<TransactionDto[]>([]);
   const [accounts, setAccounts] = useState<AccountDto[]>([]);
@@ -47,6 +54,27 @@ export default function TransactionsPage() {
   const [maxAmount, setMaxAmount] = useState<string>("");
 
   const toast = useToast();
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const pageSize = 10;
+  const [sortField, setSortField] = useState<TransactionSortField>("createdAt");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [transactions]);
+
+  function handleSort(field: TransactionSortField) {
+    setCurrentPage(1);
+    setSortField((prevField) => {
+      if (prevField === field) {
+        setSortDirection((prevDir) => (prevDir === "asc" ? "desc" : "asc"));
+        return prevField;
+      }
+      setSortDirection("asc");
+      return field;
+    });
+  }
 
   function getTransactionTypeLabel(type: TransactionType): string {
     if (type === "Deposit" || type === 0) {
@@ -72,6 +100,69 @@ export default function TransactionsPage() {
       return "bg-sky-50 text-sky-700";
     }
     return "bg-amber-50 text-amber-700";
+  }
+
+  function getAmountTextClasses(type: TransactionType): string {
+    if (type === "Deposit" || type === 0) {
+      return "text-emerald-700";
+    }
+    if (type === "Withdrawal" || type === 1) {
+      return "text-red-600";
+    }
+    if (type === "TransferIn" || type === 2) {
+      return "text-sky-700";
+    }
+    return "text-amber-700";
+  }
+
+  const sortedTransactions = useMemo(() => {
+    const data = [...transactions];
+    data.sort((a, b) => {
+      let aValue: string | number = "";
+      let bValue: string | number = "";
+      if (sortField === "createdAt") {
+        aValue = new Date(a.createdAt).getTime();
+        bValue = new Date(b.createdAt).getTime();
+      } else if (sortField === "accountNumber") {
+        aValue = a.accountNumber.toLowerCase();
+        bValue = b.accountNumber.toLowerCase();
+      } else if (sortField === "clientName") {
+        aValue = a.clientName.toLowerCase();
+        bValue = b.clientName.toLowerCase();
+      } else if (sortField === "transactionType") {
+        aValue = getTransactionTypeLabel(a.transactionType);
+        bValue = getTransactionTypeLabel(b.transactionType);
+      } else {
+        aValue = a.amount;
+        bValue = b.amount;
+      }
+
+      if (aValue < bValue) {
+        return sortDirection === "asc" ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortDirection === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+    return data;
+  }, [transactions, sortField, sortDirection]);
+
+  const totalPages = Math.max(1, Math.ceil(sortedTransactions.length / pageSize));
+  const currentPageSafe = Math.min(currentPage, totalPages);
+  const startIndex = (currentPageSafe - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const pageItems = sortedTransactions.slice(startIndex, endIndex);
+
+  function renderSortIndicator(field: TransactionSortField) {
+    if (sortField !== field) {
+      return null;
+    }
+    return (
+      <span className="text-[10px] text-slate-400">
+        {sortDirection === "asc" ? "▲" : "▼"}
+      </span>
+    );
   }
 
   async function loadInitial() {
@@ -283,16 +374,56 @@ export default function TransactionsPage() {
         <Table>
           <TableHead>
             <tr>
-              <TableHeaderCell>Дата</TableHeaderCell>
-              <TableHeaderCell>Сметка</TableHeaderCell>
-              <TableHeaderCell>Клиент</TableHeaderCell>
-              <TableHeaderCell className="min-w-[160px]">Тип</TableHeaderCell>
-              <TableHeaderCell>Сума</TableHeaderCell>
+              <TableHeaderCell
+                className="cursor-pointer select-none"
+                onClick={() => handleSort("createdAt")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Дата
+                  {renderSortIndicator("createdAt")}
+                </span>
+              </TableHeaderCell>
+              <TableHeaderCell
+                className="cursor-pointer select-none"
+                onClick={() => handleSort("accountNumber")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Сметка
+                  {renderSortIndicator("accountNumber")}
+                </span>
+              </TableHeaderCell>
+              <TableHeaderCell
+                className="cursor-pointer select-none"
+                onClick={() => handleSort("clientName")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Клиент
+                  {renderSortIndicator("clientName")}
+                </span>
+              </TableHeaderCell>
+              <TableHeaderCell
+                className="min-w-[160px] cursor-pointer select-none"
+                onClick={() => handleSort("transactionType")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Тип
+                  {renderSortIndicator("transactionType")}
+                </span>
+              </TableHeaderCell>
+              <TableHeaderCell
+                className="cursor-pointer select-none"
+                onClick={() => handleSort("amount")}
+              >
+                <span className="inline-flex items-center gap-1">
+                  Сума
+                  {renderSortIndicator("amount")}
+                </span>
+              </TableHeaderCell>
               <TableHeaderCell>Описание</TableHeaderCell>
             </tr>
           </TableHead>
           <TableBody>
-            {transactions.map((tx) => (
+            {pageItems.map((tx) => (
               <TableRow key={tx.id}>
                 <TableCell className="text-slate-500">
                   {new Date(tx.createdAt).toLocaleString()}
@@ -310,7 +441,7 @@ export default function TransactionsPage() {
                     {getTransactionTypeLabel(tx.transactionType)}
                   </span>
                 </TableCell>
-                <TableCell className="text-emerald-600 font-medium">
+                <TableCell className={`${getAmountTextClasses(tx.transactionType)} font-medium`}>
                   {tx.amount.toFixed(2)}
                 </TableCell>
                 <TableCell className="text-slate-700">{tx.description}</TableCell>
@@ -341,6 +472,41 @@ export default function TransactionsPage() {
           </TableBody>
         </Table>
       </TableWrapper>
+      <div className="flex items-center justify-between gap-3 text-xs text-slate-600">
+        <div>
+          Показани{" "}
+          <span className="font-semibold">
+            {transactions.length === 0 ? 0 : startIndex + 1}–
+            {Math.min(endIndex, sortedTransactions.length)}
+          </span>{" "}
+          от{" "}
+          <span className="font-semibold">
+            {sortedTransactions.length}
+          </span>{" "}
+          транзакции
+        </div>
+        <div className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-1 py-0.5 shadow-sm">
+          <button
+            type="button"
+            onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+            disabled={currentPageSafe === 1}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            ‹
+          </button>
+          <span className="px-1 text-[11px] font-medium">
+            Стр. {currentPageSafe} от {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+            disabled={currentPageSafe === totalPages}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs text-slate-600 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            ›
+          </button>
+        </div>
+      </div>
     </section>
   );
 }
