@@ -58,6 +58,19 @@ export default function TransactionsPage() {
     return "Изходящ превод";
   }
 
+  function getTransactionTypeClasses(type: TransactionType): string {
+    if (type === "Deposit" || type === 0) {
+      return "bg-emerald-50 text-emerald-700";
+    }
+    if (type === "Withdrawal" || type === 1) {
+      return "bg-red-50 text-red-700";
+    }
+    if (type === "TransferIn" || type === 2) {
+      return "bg-sky-50 text-sky-700";
+    }
+    return "bg-amber-50 text-amber-700";
+  }
+
   async function loadInitial() {
     setLoading(true);
     setError(null);
@@ -193,11 +206,11 @@ export default function TransactionsPage() {
           <option value="TransferIn">Входящ превод</option>
           <option value="TransferOut">Изходящ превод</option>
         </Select>
-        <div className="flex flex-col gap-1 md:flex-row md:items-end md:gap-2">
-          <div className="flex flex-1 flex-col gap-1">
-            <label className="text-xs font-medium text-slate-700">
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1">
+            <span className="text-xs font-medium text-slate-700">
               Сума мин / макс
-            </label>
+            </span>
             <div className="flex gap-2">
               <Input
                 type="number"
@@ -215,7 +228,7 @@ export default function TransactionsPage() {
               />
             </div>
           </div>
-          <div className="flex items-end gap-2 md:justify-end">
+          <div className="flex gap-2 justify-end">
             <Button
               type="submit"
               variant="secondary"
@@ -246,7 +259,6 @@ export default function TransactionsPage() {
                   .then(setTransactions)
                   .catch((e) => setError((e as Error).message));
               }}
-              className="hidden md:inline-flex"
               disabled={loading}
             >
               Нулиране
@@ -278,7 +290,11 @@ export default function TransactionsPage() {
                 </TableCell>
                 <TableCell className="text-slate-700">{tx.clientName}</TableCell>
                 <TableCell>
-                  <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700">
+                  <span
+                    className={`rounded-full px-2 py-1 text-xs font-semibold ${getTransactionTypeClasses(
+                      tx.transactionType,
+                    )}`}
+                  >
                     {getTransactionTypeLabel(tx.transactionType)}
                   </span>
                 </TableCell>
