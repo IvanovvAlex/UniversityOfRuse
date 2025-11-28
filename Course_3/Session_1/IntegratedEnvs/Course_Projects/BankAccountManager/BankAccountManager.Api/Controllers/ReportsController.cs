@@ -32,6 +32,101 @@ namespace BankAccountManager.Api.Controllers
             this.transactionService = transactionService;
         }
 
+        [HttpGet("all/excel")]
+        public async Task<IActionResult> ExportAll(CancellationToken cancellationToken)
+        {
+            IReadOnlyCollection<ClientDto> clients =
+                await this.clientService.GetAllAsync(cancellationToken);
+            IReadOnlyCollection<AccountDto> accounts =
+                await this.accountService.GetAllAsync(cancellationToken);
+
+            TransactionSearchRequest transactionSearchRequest = new TransactionSearchRequest();
+            IReadOnlyCollection<TransactionDto> transactions =
+                await this.transactionService.SearchAsync(transactionSearchRequest, cancellationToken);
+
+            using XLWorkbook workbook = new XLWorkbook();
+
+            // Clients worksheet
+            IXLWorksheet clientsSheet = workbook.Worksheets.Add("Clients");
+            clientsSheet.Cell(1, 1).Value = "Id";
+            clientsSheet.Cell(1, 2).Value = "First Name";
+            clientsSheet.Cell(1, 3).Value = "Last Name";
+            clientsSheet.Cell(1, 4).Value = "Email";
+            clientsSheet.Cell(1, 5).Value = "Phone";
+            clientsSheet.Cell(1, 6).Value = "Created At";
+            clientsSheet.Cell(1, 7).Value = "Is Active";
+
+            int clientsRow = 2;
+            foreach (ClientDto client in clients)
+            {
+                clientsSheet.Cell(clientsRow, 1).Value = client.Id.ToString();
+                clientsSheet.Cell(clientsRow, 2).Value = client.FirstName;
+                clientsSheet.Cell(clientsRow, 3).Value = client.LastName;
+                clientsSheet.Cell(clientsRow, 4).Value = client.Email;
+                clientsSheet.Cell(clientsRow, 5).Value = client.Phone;
+                clientsSheet.Cell(clientsRow, 6).Value = client.CreatedAt;
+                clientsSheet.Cell(clientsRow, 7).Value = client.IsActive;
+                clientsRow++;
+            }
+
+            // Accounts worksheet
+            IXLWorksheet accountsSheet = workbook.Worksheets.Add("Accounts");
+            accountsSheet.Cell(1, 1).Value = "Id";
+            accountsSheet.Cell(1, 2).Value = "Client";
+            accountsSheet.Cell(1, 3).Value = "Account Number";
+            accountsSheet.Cell(1, 4).Value = "Currency";
+            accountsSheet.Cell(1, 5).Value = "Balance";
+            accountsSheet.Cell(1, 6).Value = "Created At";
+
+            int accountsRow = 2;
+            foreach (AccountDto account in accounts)
+            {
+                accountsSheet.Cell(accountsRow, 1).Value = account.Id.ToString();
+                accountsSheet.Cell(accountsRow, 2).Value = account.ClientName;
+                accountsSheet.Cell(accountsRow, 3).Value = account.AccountNumber;
+                accountsSheet.Cell(accountsRow, 4).Value = account.Currency;
+                accountsSheet.Cell(accountsRow, 5).Value = account.Balance;
+                accountsSheet.Cell(accountsRow, 6).Value = account.CreatedAt;
+                accountsRow++;
+            }
+
+            // Transactions worksheet
+            IXLWorksheet transactionsSheet = workbook.Worksheets.Add("Transactions");
+            transactionsSheet.Cell(1, 1).Value = "Id";
+            transactionsSheet.Cell(1, 2).Value = "Account";
+            transactionsSheet.Cell(1, 3).Value = "Client";
+            transactionsSheet.Cell(1, 4).Value = "Type";
+            transactionsSheet.Cell(1, 5).Value = "Amount";
+            transactionsSheet.Cell(1, 6).Value = "Description";
+            transactionsSheet.Cell(1, 7).Value = "Created At";
+            transactionsSheet.Cell(1, 8).Value = "Related Account Id";
+            transactionsSheet.Cell(1, 9).Value = "Related Client Id";
+
+            int transactionsRow = 2;
+            foreach (TransactionDto transaction in transactions)
+            {
+                transactionsSheet.Cell(transactionsRow, 1).Value = transaction.Id.ToString();
+                transactionsSheet.Cell(transactionsRow, 2).Value = transaction.AccountNumber;
+                transactionsSheet.Cell(transactionsRow, 3).Value = transaction.ClientName;
+                transactionsSheet.Cell(transactionsRow, 4).Value = transaction.TransactionType.ToString();
+                transactionsSheet.Cell(transactionsRow, 5).Value = transaction.Amount;
+                transactionsSheet.Cell(transactionsRow, 6).Value = transaction.Description;
+                transactionsSheet.Cell(transactionsRow, 7).Value = transaction.CreatedAt;
+                transactionsSheet.Cell(transactionsRow, 8).Value = transaction.RelatedAccountId?.ToString() ?? string.Empty;
+                transactionsSheet.Cell(transactionsRow, 9).Value = transaction.RelatedClientId?.ToString() ?? string.Empty;
+                transactionsRow++;
+            }
+
+            using MemoryStream stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            byte[] content = stream.ToArray();
+
+            return this.File(
+                content,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "bank-reports.xlsx");
+        }
+
         [HttpGet("clients/excel")]
         public async Task<IActionResult> ExportClients(CancellationToken cancellationToken)
         {

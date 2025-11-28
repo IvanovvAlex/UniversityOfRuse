@@ -282,4 +282,8 @@ export function downloadTransactionsExcel(params: {
   window.location.href = url;
 }
 
+export function downloadAllReportsExcel(): void {
+  window.location.href = `${apiBaseUrl}/api/reports/all/excel`;
+}
+
 

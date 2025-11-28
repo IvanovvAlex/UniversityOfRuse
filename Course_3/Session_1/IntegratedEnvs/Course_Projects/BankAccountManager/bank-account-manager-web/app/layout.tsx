@@ -31,9 +31,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <a href="/operations" className="hover:text-white">
                   Operations
                 </a>
-                <a href="/reports" className="hover:text-white">
-                  Reports
-                </a>
               </nav>
             </div>
           </header>
