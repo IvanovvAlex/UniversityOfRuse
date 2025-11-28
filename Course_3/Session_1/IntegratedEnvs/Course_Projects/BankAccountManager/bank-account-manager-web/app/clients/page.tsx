@@ -309,28 +309,28 @@ export default function ClientsPage() {
         <Table>
           <TableHead>
             <tr>
-              <TableHeaderCell>Име</TableHeaderCell>
-              <TableHeaderCell>Имейл</TableHeaderCell>
-              <TableHeaderCell>Телефон</TableHeaderCell>
-              <TableHeaderCell>Създаден</TableHeaderCell>
-              <TableHeaderCell>Статус</TableHeaderCell>
-              <TableHeaderCell className="text-right">Действия</TableHeaderCell>
+              <TableHeaderCell className="px-4 py-2">Име</TableHeaderCell>
+              <TableHeaderCell className="px-4 py-2">Имейл</TableHeaderCell>
+              <TableHeaderCell className="px-4 py-2">Телефон</TableHeaderCell>
+              <TableHeaderCell className="px-4 py-2">Създаден</TableHeaderCell>
+              <TableHeaderCell className="px-4 py-2">Статус</TableHeaderCell>
+              <TableHeaderCell className="px-4 py-2 text-right">Действия</TableHeaderCell>
             </tr>
           </TableHead>
           <TableBody>
             {clients.map((client) => (
               <TableRow key={client.id}>
-                <TableCell>
+                <TableCell className="px-4 py-2">
                   <div className="font-medium">
                     {client.firstName} {client.lastName}
                   </div>
                 </TableCell>
-                <TableCell className="text-slate-600">{client.email}</TableCell>
-                <TableCell className="text-slate-600">{client.phone}</TableCell>
-                <TableCell className="text-slate-500">
+                <TableCell className="px-4 py-2 text-slate-600">{client.email}</TableCell>
+                <TableCell className="px-4 py-2 text-slate-600">{client.phone}</TableCell>
+                <TableCell className="px-4 py-2 text-slate-500">
                   {new Date(client.createdAt).toLocaleString()}
                 </TableCell>
-                <TableCell>
+                <TableCell className="px-4 py-2">
                   <span
                     className={`rounded-full px-2 py-1 text-xs font-semibold ${
                       client.isActive
@@ -341,7 +341,7 @@ export default function ClientsPage() {
                     {client.isActive ? "Активен" : "Неактивен"}
                   </span>
                 </TableCell>
-                <TableCell className="text-right space-x-2">
+                <TableCell className="px-4 py-2 text-right space-x-2">
                   <Button
                     type="button"
                     variant="secondary"

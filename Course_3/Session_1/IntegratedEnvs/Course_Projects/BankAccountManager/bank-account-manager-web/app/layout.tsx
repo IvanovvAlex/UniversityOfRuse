@@ -11,7 +11,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className="min-h-screen bg-slate-100 text-slate-900 antialiased">
         <div className="flex min-h-screen flex-col">
           <header className="border-b border-slate-200 bg-white/80 backdrop-blur">
-            <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+            <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
               <div className="flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-600 text-sm font-semibold text-white shadow-sm">
                   BA
@@ -44,8 +44,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
               </nav>
             </div>
           </header>
-          <main className="mx-auto flex w-full max-w-6xl flex-1 px-4 py-6 sm:px-6">
-            <div className="flex w-full flex-col gap-6 rounded-2xl bg-gradient-to-b from-slate-50/80 to-slate-100/80 p-4 shadow-sm sm:p-6">
+          <main className="mx-auto flex w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8">
+            <div className="flex w-full flex-col gap-6 rounded-2xl bg-gradient-to-b from-slate-50/80 to-slate-100/80 p-4 shadow-sm sm:p-6 lg:p-8">
               {children}
             </div>
           </main>

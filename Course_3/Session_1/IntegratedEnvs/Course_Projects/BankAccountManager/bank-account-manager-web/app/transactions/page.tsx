@@ -274,7 +274,7 @@ export default function TransactionsPage() {
               <TableHeaderCell>Дата</TableHeaderCell>
               <TableHeaderCell>Сметка</TableHeaderCell>
               <TableHeaderCell>Клиент</TableHeaderCell>
-              <TableHeaderCell>Тип</TableHeaderCell>
+              <TableHeaderCell className="min-w-[160px]">Тип</TableHeaderCell>
               <TableHeaderCell>Сума</TableHeaderCell>
               <TableHeaderCell>Описание</TableHeaderCell>
             </tr>
@@ -289,9 +289,9 @@ export default function TransactionsPage() {
                   {tx.accountNumber}
                 </TableCell>
                 <TableCell className="text-slate-700">{tx.clientName}</TableCell>
-                <TableCell>
+                <TableCell className="min-w-[160px]">
                   <span
-                    className={`rounded-full px-2 py-1 text-xs font-semibold ${getTransactionTypeClasses(
+                    className={`inline-block whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold ${getTransactionTypeClasses(
                       tx.transactionType,
                     )}`}
                   >

@@ -9,7 +9,7 @@ export function TableWrapper({ className, ...props }: HTMLAttributes<HTMLDivElem
   return (
     <div
       className={twMerge(
-        "overflow-x-auto rounded-xl border border-slate-200 bg-white/80 shadow-sm",
+        "w-full overflow-x-auto rounded-xl border border-slate-200 bg-white/80 shadow-sm",
         className,
       )}
       {...props}
@@ -65,7 +65,7 @@ export function TableCell({
 }: TdHTMLAttributes<HTMLTableCellElement>) {
   return (
     <td
-      className={twMerge("px-3 py-2 align-middle text-sm", className)}
+      className={twMerge("px-6 py-3 align-middle text-sm", className)}
       {...props}
     />
   );
@@ -77,7 +77,7 @@ export function TableHeaderCell({
 }: ThHTMLAttributes<HTMLTableCellElement>) {
   return (
     <th
-      className={twMerge("px-3 py-2 text-left align-middle", className)}
+      className={twMerge("px-6 py-3 text-left align-middle", className)}
       {...props}
     />
   );
