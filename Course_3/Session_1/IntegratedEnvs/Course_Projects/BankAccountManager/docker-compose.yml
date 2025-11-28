@@ -1,14 +1,15 @@
 services:
   db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: postgres:16-alpine
     container_name: bankaccountmanager-db
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=YourStrong!Passw0rd
+      - POSTGRES_USER=bankadmin
+      - POSTGRES_PASSWORD=YourStrong!Passw0rd
+      - POSTGRES_DB=BankAccountManager
     ports:
-      - "14333:1433"
+      - "54321:5432"
     healthcheck:
-      test: ["CMD-SHELL", "sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q \"SELECT 1\" || exit 1"]
+      test: ["CMD-SHELL", "pg_isready -U bankadmin -d BankAccountManager || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -19,10 +20,11 @@ services:
       dockerfile: BankAccountManager.Api/Dockerfile
     container_name: bankaccountmanager-api
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db;Database=BankAccountManager;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=BankAccountManager;Username=bankadmin;Password=YourStrong!Passw0rd
     ports:
       - "5001:5000"
 
