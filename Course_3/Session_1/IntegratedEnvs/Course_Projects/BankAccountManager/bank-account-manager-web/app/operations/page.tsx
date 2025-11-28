@@ -14,6 +14,13 @@ import {
   withdraw,
   transfer,
 } from "../../lib/api";
+import { PageHeader } from "../../components/ui/page-header";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Select } from "../../components/ui/select";
+import { Alert } from "../../components/ui/alert";
+import { Card } from "../../components/ui/card";
+import { Spinner } from "../../components/ui/spinner";
 
 export default function OperationsPage() {
   const [accounts, setAccounts] = useState<AccountDto[]>([]);
@@ -166,244 +173,237 @@ export default function OperationsPage() {
 
   return (
     <section className="flex w-full flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Операции</h1>
-        <p className="text-sm text-slate-300">
-          Извършвайте внасяния, тегления и преводи между клиентски сметки.
-        </p>
-      </div>
+      <PageHeader
+        title="Операции"
+        description="Извършвайте внасяния, тегления и преводи между клиентски сметки."
+      />
 
-      {message && (
-        <div className="rounded border border-emerald-700 bg-emerald-900/40 px-3 py-2 text-sm text-emerald-200">
-          {message}
-        </div>
-      )}
+      {message && <Alert variant="success">{message}</Alert>}
 
-      {error && (
-        <div className="rounded border border-red-700 bg-red-900/40 px-3 py-2 text-sm text-red-200">
-          {error}
-        </div>
-      )}
+      {error && <Alert variant="error">{error}</Alert>}
 
       <div className="grid gap-4 md:grid-cols-3">
-        <form
-          onSubmit={handleDeposit}
-          className="flex flex-col gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm"
-        >
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-200">
-            Внасяне
-          </h2>
-          <select
-            value={depositAccountId}
-            onChange={(e) =>
-              setDepositAccountId(
-                e.target.value as "" | string,
-              )
-            }
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-            required
-          >
-            <option value="">Изберете сметка</option>
-            {accounts.map((account) => (
-              <option key={account.id} value={account.id}>
-                {account.accountNumber} ({account.clientName})
-              </option>
-            ))}
-          </select>
-          <input
-            type="number"
-            min="0"
-            step="0.01"
-            value={depositAmount}
-            onChange={(e) => setDepositAmount(e.target.value)}
-            placeholder="Сума"
-            required
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          />
-          <input
-            value={depositDescription}
-            onChange={(e) => setDepositDescription(e.target.value)}
-            placeholder="Описание"
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          />
-          <button
-            type="submit"
-            className="mt-1 rounded bg-emerald-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-emerald-500"
-            disabled={loading}
-          >
-            Внасяне
-          </button>
+        <form onSubmit={handleDeposit}>
+          <Card className="flex flex-col gap-3 text-sm">
+            <h2 className="text-sm font-semibold text-slate-900">
+              Внасяне
+            </h2>
+            <Select
+              value={depositAccountId}
+              onChange={(e) =>
+                setDepositAccountId(e.target.value as "" | string)
+              }
+              required
+            >
+              <option value="">Изберете сметка</option>
+              {accounts.map((account) => (
+                <option key={account.id} value={account.id}>
+                  {account.accountNumber} ({account.clientName})
+                </option>
+              ))}
+            </Select>
+            <Input
+              type="number"
+              min="0"
+              step="0.01"
+              value={depositAmount}
+              onChange={(e) => setDepositAmount(e.target.value)}
+              placeholder="Сума"
+              required
+            />
+            <Input
+              value={depositDescription}
+              onChange={(e) => setDepositDescription(e.target.value)}
+              placeholder="Описание"
+            />
+            <Button
+              type="submit"
+              size="sm"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Spinner /> Внасяне
+                </span>
+              ) : (
+                "Внасяне"
+              )}
+            </Button>
+          </Card>
         </form>
 
-        <form
-          onSubmit={handleWithdraw}
-          className="flex flex-col gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm"
-        >
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-200">
-            Теглене
-          </h2>
-          <select
-            value={withdrawAccountId}
-            onChange={(e) =>
-              setWithdrawAccountId(
-                e.target.value as "" | string,
-              )
-            }
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-            required
-          >
-            <option value="">Изберете сметка</option>
-            {accounts.map((account) => (
-              <option key={account.id} value={account.id}>
-                {account.accountNumber} ({account.clientName})
-              </option>
-            ))}
-          </select>
-          <input
-            type="number"
-            min="0"
-            step="0.01"
-            value={withdrawAmount}
-            onChange={(e) => setWithdrawAmount(e.target.value)}
-            placeholder="Сума"
-            required
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          />
-          <input
-            value={withdrawDescription}
-            onChange={(e) => setWithdrawDescription(e.target.value)}
-            placeholder="Описание"
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          />
-          <button
-            type="submit"
-            className="mt-1 rounded bg-red-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-red-600"
-            disabled={loading}
-          >
-            Теглене
-          </button>
+        <form onSubmit={handleWithdraw}>
+          <Card className="flex flex-col gap-3 text-sm">
+            <h2 className="text-sm font-semibold text-slate-900">
+              Теглене
+            </h2>
+            <Select
+              value={withdrawAccountId}
+              onChange={(e) =>
+                setWithdrawAccountId(e.target.value as "" | string)
+              }
+              required
+            >
+              <option value="">Изберете сметка</option>
+              {accounts.map((account) => (
+                <option key={account.id} value={account.id}>
+                  {account.accountNumber} ({account.clientName})
+                </option>
+              ))}
+            </Select>
+            <Input
+              type="number"
+              min="0"
+              step="0.01"
+              value={withdrawAmount}
+              onChange={(e) => setWithdrawAmount(e.target.value)}
+              placeholder="Сума"
+              required
+            />
+            <Input
+              value={withdrawDescription}
+              onChange={(e) => setWithdrawDescription(e.target.value)}
+              placeholder="Описание"
+            />
+            <Button
+              type="submit"
+              variant="danger"
+              size="sm"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Spinner /> Теглене
+                </span>
+              ) : (
+                "Теглене"
+              )}
+            </Button>
+          </Card>
         </form>
 
-        <form
-          onSubmit={handleTransfer}
-          className="flex flex-col gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm"
-        >
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-200">
-            Превод
-          </h2>
-          <div className="grid grid-cols-2 gap-2">
-            <div className="flex flex-col gap-1">
-              <label className="text-xs uppercase text-slate-400">
-                От клиент
-              </label>
-              <select
-                value={sourceClientId}
-                onChange={(e) => {
-                  const value =
-                    e.target.value === "" ? "" : e.target.value;
-                  setSourceClientId(value);
-                  setSourceAccountId("");
-                }}
-                className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs focus:border-emerald-500 focus:outline-none"
-              >
-                <option value="">Всеки</option>
-                {clients.map((client) => (
-                  <option key={client.id} value={client.id}>
-                    {client.firstName} {client.lastName}
-                  </option>
-                ))}
-              </select>
+        <form onSubmit={handleTransfer}>
+          <Card className="flex flex-col gap-3 text-sm">
+            <h2 className="text-sm font-semibold text-slate-900">
+              Превод
+            </h2>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-medium text-slate-700">
+                  От клиент
+                </label>
+                <Select
+                  value={sourceClientId}
+                  onChange={(e) => {
+                    const value = e.target.value === "" ? "" : e.target.value;
+                    setSourceClientId(value);
+                    setSourceAccountId("");
+                  }}
+                  className="h-8 px-2 text-xs"
+                >
+                  <option value="">Всеки</option>
+                  {clients.map((client) => (
+                    <option key={client.id} value={client.id}>
+                      {client.firstName} {client.lastName}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-medium text-slate-700">
+                  От сметка
+                </label>
+                <Select
+                  value={sourceAccountId}
+                  onChange={(e) =>
+                    setSourceAccountId(
+                      e.target.value === "" ? "" : e.target.value,
+                    )
+                  }
+                  required
+                  className="h-8 px-2 text-xs"
+                >
+                  <option value="">Изберете</option>
+                  {sourceAccounts.map((account) => (
+                    <option key={account.id} value={account.id}>
+                      {account.accountNumber} ({account.clientName})
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-medium text-slate-700">
+                  До клиент
+                </label>
+                <Select
+                  value={destinationClientId}
+                  onChange={(e) => {
+                    const value = e.target.value === "" ? "" : e.target.value;
+                    setDestinationClientId(value);
+                    setDestinationAccountId("");
+                  }}
+                  className="h-8 px-2 text-xs"
+                >
+                  <option value="">Всеки</option>
+                  {clients.map((client) => (
+                    <option key={client.id} value={client.id}>
+                      {client.firstName} {client.lastName}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-medium text-slate-700">
+                  До сметка
+                </label>
+                <Select
+                  value={destinationAccountId}
+                  onChange={(e) =>
+                    setDestinationAccountId(
+                      e.target.value === "" ? "" : e.target.value,
+                    )
+                  }
+                  required
+                  className="h-8 px-2 text-xs"
+                >
+                  <option value="">Изберете</option>
+                  {destinationAccounts.map((account) => (
+                    <option key={account.id} value={account.id}>
+                      {account.accountNumber} ({account.clientName})
+                    </option>
+                  ))}
+                </Select>
+              </div>
             </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-xs uppercase text-slate-400">
-                От сметка
-              </label>
-              <select
-                value={sourceAccountId}
-                onChange={(e) =>
-                  setSourceAccountId(
-                    e.target.value === "" ? "" : e.target.value,
-                  )
-                }
-                className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs focus:border-emerald-500 focus:outline-none"
-                required
-              >
-                <option value="">Изберете</option>
-                {sourceAccounts.map((account) => (
-                  <option key={account.id} value={account.id}>
-                    {account.accountNumber} ({account.clientName})
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-xs uppercase text-slate-400">
-                До клиент
-              </label>
-              <select
-                value={destinationClientId}
-                onChange={(e) => {
-                  const value =
-                    e.target.value === "" ? "" : e.target.value;
-                  setDestinationClientId(value);
-                  setDestinationAccountId("");
-                }}
-                className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs focus:border-emerald-500 focus:outline-none"
-              >
-                <option value="">Всеки</option>
-                {clients.map((client) => (
-                  <option key={client.id} value={client.id}>
-                    {client.firstName} {client.lastName}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-xs uppercase text-slate-400">
-                До сметка
-              </label>
-              <select
-                value={destinationAccountId}
-                onChange={(e) =>
-                  setDestinationAccountId(
-                    e.target.value === "" ? "" : e.target.value,
-                  )
-                }
-                className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs focus:border-emerald-500 focus:outline-none"
-                required
-              >
-                <option value="">Изберете</option>
-                {destinationAccounts.map((account) => (
-                  <option key={account.id} value={account.id}>
-                    {account.accountNumber} ({account.clientName})
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <input
-            type="number"
-            min="0"
-            step="0.01"
-            value={transferAmount}
-            onChange={(e) => setTransferAmount(e.target.value)}
-            placeholder="Сума"
-            required
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          />
-          <input
-            value={transferDescription}
-            onChange={(e) => setTransferDescription(e.target.value)}
-            placeholder="Описание"
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          />
-          <button
-            type="submit"
-            className="mt-1 rounded bg-sky-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-sky-500"
-            disabled={loading}
-          >
-            Превод
-          </button>
+            <Input
+              type="number"
+              min="0"
+              step="0.01"
+              value={transferAmount}
+              onChange={(e) => setTransferAmount(e.target.value)}
+              placeholder="Сума"
+              required
+            />
+            <Input
+              value={transferDescription}
+              onChange={(e) => setTransferDescription(e.target.value)}
+              placeholder="Описание"
+            />
+            <Button
+              type="submit"
+              variant="secondary"
+              size="sm"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Spinner /> Превод
+                </span>
+              ) : (
+                "Превод"
+              )}
+            </Button>
+          </Card>
         </form>
       </div>
     </section>

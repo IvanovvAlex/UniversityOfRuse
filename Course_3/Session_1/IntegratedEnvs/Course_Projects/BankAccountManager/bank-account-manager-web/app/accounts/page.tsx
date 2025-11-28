@@ -15,6 +15,21 @@ import {
   updateAccount,
   deleteAccount,
 } from "../../lib/api";
+import { PageHeader } from "../../components/ui/page-header";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Select } from "../../components/ui/select";
+import { Alert } from "../../components/ui/alert";
+import {
+  TableWrapper,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableHeaderCell,
+} from "../../components/ui/table";
+import { Spinner } from "../../components/ui/spinner";
 
 type AccountFormState = {
   id?: string;
@@ -34,7 +49,7 @@ export default function AccountsPage() {
   const [form, setForm] = useState<AccountFormState>({
     clientId: "",
     accountNumber: "",
-    currency: "EUR",
+    currency: "BGN",
   });
 
   const isEditing: boolean = useMemo(() => form.id !== undefined, [form.id]);
@@ -82,7 +97,7 @@ export default function AccountsPage() {
     setForm({
       clientId: "",
       accountNumber: "",
-      currency: "EUR",
+      currency: "BGN",
     });
   }
 
@@ -149,232 +164,215 @@ export default function AccountsPage() {
 
   return (
     <section className="flex w-full flex-col gap-6">
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Сметки</h1>
-          <p className="text-sm text-slate-300">
-            Управлявайте банкови сметки, наличности и експортирайте списъци към Excel.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={downloadAccountsExcel}
-          className="rounded bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
-        >
-          Експорт в Excel
-        </button>
-      </div>
+      <PageHeader
+        title="Сметки"
+        description="Управлявайте банкови сметки, наличности и експортирайте списъци към Excel."
+        actions={
+          <Button
+            type="button"
+            onClick={downloadAccountsExcel}
+          >
+            Експорт в Excel
+          </Button>
+        }
+      />
 
-      {error && (
-        <div className="rounded border border-red-700 bg-red-900/40 px-3 py-2 text-sm text-red-200">
-          {error}
-        </div>
-      )}
+      {error && <Alert variant="error">{error}</Alert>}
 
       <form
         onSubmit={handleSearch}
-        className="grid gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm md:grid-cols-4"
+        className="grid gap-3 rounded-xl border border-slate-200 bg-white/80 p-4 text-sm md:grid-cols-4 shadow-sm"
       >
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Клиент</label>
-          <select
-            value={searchClientId}
-            onChange={(e) => setSearchClientId(e.target.value as "" | string)}
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          >
-            <option value="">Всички</option>
-            {clients.map((client) => (
-              <option key={client.id} value={client.id}>
-                {client.firstName} {client.lastName}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Номер на сметка</label>
-          <input
-            value={searchAccountNumber}
-            onChange={(e) => setSearchAccountNumber(e.target.value)}
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-            placeholder="Съдържа..."
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Валута</label>
-          <input
-            value={searchCurrency}
-            onChange={(e) => setSearchCurrency(e.target.value)}
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-            placeholder="напр. BGN"
-          />
-        </div>
+        <Select
+          value={searchClientId}
+          onChange={(e) => setSearchClientId(e.target.value as "" | string)}
+          label="Клиент"
+        >
+          <option value="">Всички</option>
+          {clients.map((client) => (
+            <option key={client.id} value={client.id}>
+              {client.firstName} {client.lastName}
+            </option>
+          ))}
+        </Select>
+        <Input
+          label="Номер на сметка"
+          value={searchAccountNumber}
+          onChange={(e) => setSearchAccountNumber(e.target.value)}
+          placeholder="Съдържа..."
+        />
+        <Input
+          label="Валута"
+          value={searchCurrency}
+          onChange={(e) => setSearchCurrency(e.target.value)}
+          placeholder="напр. BGN"
+        />
         <div className="flex items-end gap-2">
-          <button
+          <Button
             type="submit"
-            className="w-full rounded bg-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-slate-600"
+            className="w-full"
+            variant="secondary"
+            size="sm"
             disabled={loading}
           >
-            Търсене
-          </button>
-          <button
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <Spinner /> Търсене
+              </span>
+            ) : (
+              "Търсене"
+            )}
+          </Button>
+          <Button
             type="button"
+            variant="outline"
+            size="sm"
             onClick={() => {
               setSearchClientId("");
               setSearchAccountNumber("");
               setSearchCurrency("");
               loadData();
             }}
-            className="hidden rounded border border-slate-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:bg-slate-800 md:inline-flex"
+            className="hidden md:inline-flex"
             disabled={loading}
           >
             Нулиране
-          </button>
+          </Button>
         </div>
       </form>
 
       <form
         onSubmit={handleSubmit}
-        className="grid gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm md:grid-cols-4"
+        className="grid gap-3 rounded-xl border border-slate-200 bg-white/80 p-4 text-sm md:grid-cols-4 shadow-sm"
       >
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Клиент</label>
-          <select
-            value={form.clientId}
-            onChange={(e) =>
-              setForm((prev) => ({
-                ...prev,
-                clientId: e.target.value as "" | string,
-              }))
-            }
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-            required
-          >
-            <option value="">Изберете клиент</option>
-            {clients.map((client) => (
-              <option key={client.id} value={client.id}>
-                {client.firstName} {client.lastName}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Номер на сметка</label>
-          <input
-            value={form.accountNumber}
-            onChange={(e) =>
-              setForm((prev) => ({ ...prev, accountNumber: e.target.value }))
-            }
-            required={!isEditing}
-            disabled={isEditing}
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none disabled:opacity-60"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Валута</label>
-          <input
-            value={form.currency}
-            onChange={(e) =>
-              setForm((prev) => ({ ...prev, currency: e.target.value }))
-            }
-            required
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          />
-        </div>
+        <Select
+          value={form.clientId}
+          onChange={(e) =>
+            setForm((prev) => ({
+              ...prev,
+              clientId: e.target.value as "" | string,
+            }))
+          }
+          required
+          label="Клиент"
+        >
+          <option value="">Изберете клиент</option>
+          {clients.map((client) => (
+            <option key={client.id} value={client.id}>
+              {client.firstName} {client.lastName}
+            </option>
+          ))}
+        </Select>
+        <Input
+          label="Номер на сметка"
+          value={form.accountNumber}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, accountNumber: e.target.value }))
+          }
+          required={!isEditing}
+          disabled={isEditing}
+        />
+        <Input
+          label="Валута"
+          value={form.currency}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, currency: e.target.value }))
+          }
+          required
+        />
         <div className="flex items-end justify-end gap-2">
-          <button
+          <Button
             type="submit"
-            className="rounded bg-emerald-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-emerald-500"
+            size="sm"
             disabled={loading}
           >
             {isEditing ? "Запис" : "Създаване"}
-          </button>
+          </Button>
           {isEditing && (
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="sm"
               onClick={resetForm}
-              className="rounded border border-slate-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:bg-slate-800"
               disabled={loading}
             >
               Отказ
-            </button>
+            </Button>
           )}
         </div>
       </form>
 
-      <div className="overflow-x-auto rounded border border-slate-800 bg-slate-950/60">
-        <table className="min-w-full text-left text-sm">
-          <thead className="border-b border-slate-800 bg-slate-900 text-xs uppercase text-slate-400">
+      <TableWrapper>
+        <Table>
+          <TableHead>
             <tr>
-              <th className="px-3 py-2">Сметка</th>
-              <th className="px-3 py-2">Клиент</th>
-              <th className="px-3 py-2">Валута</th>
-              <th className="px-3 py-2">Наличност</th>
-              <th className="px-3 py-2">Създадена</th>
-              <th className="px-3 py-2 text-right">Действия</th>
+              <TableHeaderCell>Сметка</TableHeaderCell>
+              <TableHeaderCell>Клиент</TableHeaderCell>
+              <TableHeaderCell>Валута</TableHeaderCell>
+              <TableHeaderCell>Наличност</TableHeaderCell>
+              <TableHeaderCell>Създадена</TableHeaderCell>
+              <TableHeaderCell className="text-right">Действия</TableHeaderCell>
             </tr>
-          </thead>
-          <tbody>
+          </TableHead>
+          <TableBody>
             {accounts.map((account) => (
-              <tr
-                key={account.id}
-                className="border-b border-slate-800 last:border-b-0 hover:bg-slate-900/60"
-              >
-                <td className="px-3 py-2 font-mono text-sm text-slate-100">
+              <TableRow key={account.id}>
+                <TableCell className="font-mono text-sm">
                   {account.accountNumber}
-                </td>
-                <td className="px-3 py-2 text-slate-300">
-                  {account.clientName}
-                </td>
-                <td className="px-3 py-2 text-slate-300">
-                  {account.currency}
-                </td>
-                <td className="px-3 py-2 text-emerald-300">
+                </TableCell>
+                <TableCell>{account.clientName}</TableCell>
+                <TableCell>{account.currency}</TableCell>
+                <TableCell className="text-emerald-600 font-medium">
                   {account.balance.toFixed(2)}
-                </td>
-                <td className="px-3 py-2 text-slate-400">
+                </TableCell>
+                <TableCell className="text-slate-500">
                   {new Date(account.createdAt).toLocaleString()}
-                </td>
-                <td className="px-3 py-2 text-right">
-                  <button
+                </TableCell>
+                <TableCell className="text-right space-x-2">
+                  <Button
                     type="button"
+                    variant="secondary"
+                    size="sm"
                     onClick={() => startEdit(account)}
-                    className="mr-2 rounded border border-slate-600 px-2 py-1 text-xs text-slate-100 hover:bg-slate-800"
                   >
                     Редакция
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
+                    variant="danger"
+                    size="sm"
                     onClick={() => handleDelete(account.id)}
-                    className="rounded border border-red-700 px-2 py-1 text-xs text-red-200 hover:bg-red-900"
                   >
                     Изтриване
-                  </button>
-                </td>
-              </tr>
+                  </Button>
+                </TableCell>
+              </TableRow>
             ))}
             {accounts.length === 0 && !loading && (
-              <tr>
-                <td
+              <TableRow>
+                <TableCell
                   colSpan={6}
-                  className="px-3 py-6 text-center text-sm text-slate-400"
+                  className="py-6 text-center text-sm text-slate-500"
                 >
                   Няма намерени сметки.
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             )}
             {loading && (
-              <tr>
-                <td
+              <TableRow>
+                <TableCell
                   colSpan={6}
-                  className="px-3 py-6 text-center text-sm text-slate-400"
+                  className="py-6 text-center text-sm text-slate-500"
                 >
-                  Зареждане...
-                </td>
-              </tr>
+                  <span className="inline-flex items-center justify-center gap-2">
+                    <Spinner /> Зареждане...
+                  </span>
+                </TableCell>
+              </TableRow>
             )}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableWrapper>
     </section>
   );
 }

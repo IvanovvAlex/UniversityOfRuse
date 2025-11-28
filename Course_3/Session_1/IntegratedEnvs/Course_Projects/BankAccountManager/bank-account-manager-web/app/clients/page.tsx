@@ -13,6 +13,20 @@ import {
   updateClient,
   deleteClient,
 } from "../../lib/api";
+import { PageHeader } from "../../components/ui/page-header";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Alert } from "../../components/ui/alert";
+import {
+  TableWrapper,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableHeaderCell,
+} from "../../components/ui/table";
+import { Spinner } from "../../components/ui/spinner";
 
 type ClientFormState = {
   id?: string;
@@ -146,248 +160,232 @@ export default function ClientsPage() {
 
   return (
     <section className="flex w-full flex-col gap-6">
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Клиенти</h1>
-          <p className="text-sm text-slate-300">
-            Управлявайте банкови клиенти, търсете по критерии и експортирайте към Excel.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={downloadClientsExcel}
-          className="rounded bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
-        >
-          Експорт в Excel
-        </button>
-      </div>
+      <PageHeader
+        title="Клиенти"
+        description="Управлявайте банкови клиенти, търсете по критерии и експортирайте към Excel."
+        actions={
+          <Button
+            type="button"
+            onClick={downloadClientsExcel}
+          >
+            Експорт в Excel
+          </Button>
+        }
+      />
 
-      {error && (
-        <div className="rounded border border-red-700 bg-red-900/40 px-3 py-2 text-sm text-red-200">
-          {error}
-        </div>
-      )}
+      {error && <Alert variant="error">{error}</Alert>}
 
       <form
         onSubmit={handleSearch}
-        className="grid gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm md:grid-cols-4"
+        className="grid gap-3 rounded-xl border border-slate-200 bg-white/80 p-4 text-sm md:grid-cols-4 shadow-sm"
       >
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Име</label>
-          <input
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-            placeholder="Собствено или фамилно име"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Имейл</label>
-          <input
-            value={searchEmail}
-            onChange={(e) => setSearchEmail(e.target.value)}
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-            placeholder="Имейл"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Телефон</label>
-          <input
-            value={searchPhone}
-            onChange={(e) => setSearchPhone(e.target.value)}
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-            placeholder="Телефон"
-          />
-        </div>
+        <Input
+          label="Име"
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+          placeholder="Собствено или фамилно име"
+        />
+        <Input
+          label="Имейл"
+          value={searchEmail}
+          onChange={(e) => setSearchEmail(e.target.value)}
+          placeholder="Имейл"
+        />
+        <Input
+          label="Телефон"
+          value={searchPhone}
+          onChange={(e) => setSearchPhone(e.target.value)}
+          placeholder="Телефон"
+        />
         <div className="flex items-end gap-2">
-          <button
+          <Button
             type="submit"
-            className="w-full rounded bg-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-slate-600"
+            className="w-full"
+            variant="secondary"
+            size="sm"
             disabled={loading}
           >
-            Търсене
-          </button>
-          <button
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <Spinner /> Търсене
+              </span>
+            ) : (
+              "Търсене"
+            )}
+          </Button>
+          <Button
             type="button"
+            variant="outline"
+            size="sm"
             onClick={() => {
               setSearchName("");
               setSearchEmail("");
               setSearchPhone("");
               loadClients();
             }}
-            className="hidden rounded border border-slate-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:bg-slate-800 md:inline-flex"
+            className="hidden md:inline-flex"
             disabled={loading}
           >
             Нулиране
-          </button>
+          </Button>
         </div>
       </form>
 
       <form
         onSubmit={handleSubmit}
-        className="grid gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm md:grid-cols-5"
+        className="grid gap-3 rounded-xl border border-slate-200 bg-white/80 p-4 text-sm md:grid-cols-5 shadow-sm"
       >
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Собствено име</label>
-          <input
-            value={form.firstName}
-            onChange={(e) =>
-              setForm((prev) => ({ ...prev, firstName: e.target.value }))
-            }
-            required
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Фамилно име</label>
-          <input
-            value={form.lastName}
-            onChange={(e) =>
-              setForm((prev) => ({ ...prev, lastName: e.target.value }))
-            }
-            required
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Имейл</label>
-          <input
-            type="email"
-            value={form.email}
-            onChange={(e) =>
-              setForm((prev) => ({ ...prev, email: e.target.value }))
-            }
-            required
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Телефон</label>
-          <input
-            value={form.phone}
-            onChange={(e) =>
-              setForm((prev) => ({ ...prev, phone: e.target.value }))
-            }
-            required
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          />
-        </div>
+        <Input
+          label="Собствено име"
+          value={form.firstName}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, firstName: e.target.value }))
+          }
+          required
+        />
+        <Input
+          label="Фамилно име"
+          value={form.lastName}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, lastName: e.target.value }))
+          }
+          required
+        />
+        <Input
+          type="email"
+          label="Имейл"
+          value={form.email}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, email: e.target.value }))
+          }
+          required
+        />
+        <Input
+          label="Телефон"
+          value={form.phone}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, phone: e.target.value }))
+          }
+          required
+        />
         <div className="flex items-end gap-2">
           {isEditing && (
-            <label className="flex items-center gap-2 text-xs text-slate-300">
+            <label className="flex items-center gap-2 text-xs text-slate-700">
               <input
                 type="checkbox"
                 checked={form.isActive}
                 onChange={(e) =>
                   setForm((prev) => ({ ...prev, isActive: e.target.checked }))
                 }
-                className="h-3 w-3 rounded border-slate-600 bg-slate-950"
+                className="h-3 w-3 rounded border-slate-300"
               />
               Активен
             </label>
           )}
           <div className="ml-auto flex gap-2">
-            <button
+            <Button
               type="submit"
-              className="rounded bg-emerald-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-emerald-500"
+              size="sm"
               disabled={loading}
             >
               {isEditing ? "Запис" : "Създаване"}
-            </button>
+            </Button>
             {isEditing && (
-              <button
+              <Button
                 type="button"
+                variant="outline"
+                size="sm"
                 onClick={resetForm}
-                className="rounded border border-slate-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:bg-slate-800"
                 disabled={loading}
               >
                 Отказ
-              </button>
+              </Button>
             )}
           </div>
         </div>
       </form>
 
-      <div className="overflow-x-auto rounded border border-slate-800 bg-slate-950/60">
-        <table className="min-w-full text-left text-sm">
-          <thead className="border-b border-slate-800 bg-slate-900 text-xs uppercase text-slate-400">
+      <TableWrapper>
+        <Table>
+          <TableHead>
             <tr>
-              <th className="px-3 py-2">Име</th>
-              <th className="px-3 py-2">Имейл</th>
-              <th className="px-3 py-2">Телефон</th>
-              <th className="px-3 py-2">Създаден</th>
-              <th className="px-3 py-2">Статус</th>
-              <th className="px-3 py-2 text-right">Действия</th>
+              <TableHeaderCell>Име</TableHeaderCell>
+              <TableHeaderCell>Имейл</TableHeaderCell>
+              <TableHeaderCell>Телефон</TableHeaderCell>
+              <TableHeaderCell>Създаден</TableHeaderCell>
+              <TableHeaderCell>Статус</TableHeaderCell>
+              <TableHeaderCell className="text-right">Действия</TableHeaderCell>
             </tr>
-          </thead>
-          <tbody>
+          </TableHead>
+          <TableBody>
             {clients.map((client) => (
-              <tr
-                key={client.id}
-                className="border-b border-slate-800 last:border-b-0 hover:bg-slate-900/60"
-              >
-                <td className="px-3 py-2">
+              <TableRow key={client.id}>
+                <TableCell>
                   <div className="font-medium">
                     {client.firstName} {client.lastName}
                   </div>
-                </td>
-                <td className="px-3 py-2 text-slate-300">{client.email}</td>
-                <td className="px-3 py-2 text-slate-300">{client.phone}</td>
-                <td className="px-3 py-2 text-slate-400">
+                </TableCell>
+                <TableCell className="text-slate-600">{client.email}</TableCell>
+                <TableCell className="text-slate-600">{client.phone}</TableCell>
+                <TableCell className="text-slate-500">
                   {new Date(client.createdAt).toLocaleString()}
-                </td>
-                <td className="px-3 py-2">
+                </TableCell>
+                <TableCell>
                   <span
                     className={`rounded-full px-2 py-1 text-xs font-semibold ${
                       client.isActive
-                        ? "bg-emerald-600/30 text-emerald-300"
-                        : "bg-slate-700/40 text-slate-300"
+                        ? "bg-emerald-50 text-emerald-700"
+                        : "bg-slate-100 text-slate-600"
                     }`}
                   >
                     {client.isActive ? "Активен" : "Неактивен"}
                   </span>
-                </td>
-                <td className="px-3 py-2 text-right">
-                  <button
+                </TableCell>
+                <TableCell className="text-right space-x-2">
+                  <Button
                     type="button"
+                    variant="secondary"
+                    size="sm"
                     onClick={() => startEdit(client)}
-                    className="mr-2 rounded border border-slate-600 px-2 py-1 text-xs text-slate-100 hover:bg-slate-800"
                   >
                     Редакция
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
+                    variant="danger"
+                    size="sm"
                     onClick={() => handleDelete(client.id)}
-                    className="rounded border border-red-700 px-2 py-1 text-xs text-red-200 hover:bg-red-900"
                   >
                     Изтриване
-                  </button>
-                </td>
-              </tr>
+                  </Button>
+                </TableCell>
+              </TableRow>
             ))}
             {clients.length === 0 && !loading && (
-              <tr>
-                <td
+              <TableRow>
+                <TableCell
                   colSpan={6}
-                  className="px-3 py-6 text-center text-sm text-slate-400"
+                  className="py-6 text-center text-sm text-slate-500"
                 >
                   Няма намерени клиенти.
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             )}
             {loading && (
-              <tr>
-                <td
+              <TableRow>
+                <TableCell
                   colSpan={6}
-                  className="px-3 py-6 text-center text-sm text-slate-400"
+                  className="py-6 text-center text-sm text-slate-500"
                 >
-                  Зареждане...
-                </td>
-              </tr>
+                  <span className="inline-flex items-center justify-center gap-2">
+                    <Spinner /> Зареждане...
+                  </span>
+                </TableCell>
+              </TableRow>
             )}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableWrapper>
     </section>
   );
 }

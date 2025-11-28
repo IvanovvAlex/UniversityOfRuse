@@ -6,86 +6,72 @@ import {
   downloadClientsExcel,
   downloadTransactionsExcel,
 } from "../lib/api";
+import { PageHeader } from "../components/ui/page-header";
+import { Card } from "../components/ui/card";
+import { Button } from "../components/ui/button";
 
 export default function HomePage() {
   return (
     <section className="flex w-full flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Обзор на банковите операции
-        </h1>
-        <p className="max-w-xl text-sm text-slate-300">
-          Използвайте навигацията отгоре, за да управлявате клиенти, сметки,
-          транзакции и банкови операции. Бързите действия за експортиране на
-          основните отчети са налични по-долу.
-        </p>
-      </div>
-
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h2 className="text-lg font-semibold tracking-tight">Отчети</h2>
-          <p className="text-sm text-slate-300">
-            Изтеглете Excel отчети за клиенти, сметки и транзакции.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={downloadAllReportsExcel}
-          className="rounded bg-emerald-600 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white hover:bg-emerald-500"
-        >
-          Export all (Excel)
-        </button>
-      </div>
+      <PageHeader
+        title="Обзор на банковите операции"
+        description="Използвайте навигацията отгоре, за да управлявате клиенти, сметки, транзакции и банкови операции. Бързите действия за експортиране на основните отчети са налични по-долу."
+        actions={
+          <Button onClick={downloadAllReportsExcel} size="md">
+            Експорт на всички отчети (Excel)
+          </Button>
+        }
+      />
 
       <div className="grid gap-4 md:grid-cols-3">
-        <div className="flex flex-col gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm">
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-200">
+        <Card className="flex flex-col gap-3 text-sm">
+          <h3 className="text-sm font-semibold text-slate-900">
             Отчет за клиенти
           </h3>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-500">
             Пълен списък с клиенти с контакти и статус.
           </p>
-          <button
-            type="button"
+          <Button
             onClick={downloadClientsExcel}
-            className="mt-1 rounded bg-emerald-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-emerald-500"
+            size="sm"
+            className="mt-1 self-start"
           >
-            Изтегляне на clients.xlsx
-          </button>
-        </div>
+            Изтегляне на клиенти (Excel)
+          </Button>
+        </Card>
 
-        <div className="flex flex-col gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm">
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-200">
+        <Card className="flex flex-col gap-3 text-sm">
+          <h3 className="text-sm font-semibold text-slate-900">
             Отчет за сметки
           </h3>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-500">
             Всички сметки с наличности и свързани клиенти.
           </p>
-          <button
-            type="button"
+          <Button
             onClick={downloadAccountsExcel}
-            className="mt-1 rounded bg-emerald-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-emerald-500"
+            size="sm"
+            className="mt-1 self-start"
           >
-            Изтегляне на accounts.xlsx
-          </button>
-        </div>
+            Изтегляне на сметки (Excel)
+          </Button>
+        </Card>
 
-        <div className="flex flex-col gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm">
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-200">
+        <Card className="flex flex-col gap-3 text-sm">
+          <h3 className="text-sm font-semibold text-slate-900">
             Отчет за транзакции
           </h3>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-500">
             Използвайте филтрите на страницата „Транзакции“, за да стесните
             резултатите, след което експортирайте същия избор оттам.
           </p>
-          <button
-            type="button"
+          <Button
             onClick={() => downloadTransactionsExcel({})}
-            className="mt-1 rounded bg-emerald-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-emerald-500"
+            size="sm"
+            className="mt-1 self-start"
           >
-            Изтегляне на всички transactions.xlsx
-          </button>
-        </div>
+            Изтегляне на транзакции (Excel)
+          </Button>
+        </Card>
       </div>
     </section>
   );

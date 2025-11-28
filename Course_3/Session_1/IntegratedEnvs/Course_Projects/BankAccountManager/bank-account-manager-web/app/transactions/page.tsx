@@ -12,6 +12,21 @@ import {
   getClients,
   searchTransactions,
 } from "../../lib/api";
+import { PageHeader } from "../../components/ui/page-header";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Select } from "../../components/ui/select";
+import { Alert } from "../../components/ui/alert";
+import {
+  TableWrapper,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableHeaderCell,
+} from "../../components/ui/table";
+import { Spinner } from "../../components/ui/spinner";
 
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<TransactionDto[]>([]);
@@ -108,131 +123,117 @@ export default function TransactionsPage() {
 
   return (
     <section className="flex w-full flex-col gap-6">
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Транзакции</h1>
-          <p className="text-sm text-slate-300">
-            Преглеждайте и филтрирайте регистъра на транзакциите и експортирайте
-            извлечения към Excel.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={handleExport}
-          className="rounded bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
-        >
-          Експорт в Excel
-        </button>
-      </div>
+      <PageHeader
+        title="Транзакции"
+        description="Преглеждайте и филтрирайте регистъра на транзакциите и експортирайте извлечения към Excel."
+        actions={
+          <Button
+            type="button"
+            onClick={handleExport}
+          >
+            Експорт в Excel
+          </Button>
+        }
+      />
 
-      {error && (
-        <div className="rounded border border-red-700 bg-red-900/40 px-3 py-2 text-sm text-red-200">
-          {error}
-        </div>
-      )}
+      {error && <Alert variant="error">{error}</Alert>}
 
       <form
         onSubmit={handleSearch}
-        className="grid gap-3 rounded border border-slate-800 bg-slate-900/60 p-4 text-sm md:grid-cols-6"
+        className="grid gap-3 rounded-xl border border-slate-200 bg-white/80 p-4 text-sm md:grid-cols-6 shadow-sm"
       >
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Сметка</label>
-          <select
-            value={accountId}
-            onChange={(e) => setAccountId(e.target.value as "" | string)}
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          >
-            <option value="">Всички</option>
-            {accounts.map((account) => (
-              <option key={account.id} value={account.id}>
-                {account.accountNumber} ({account.clientName})
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Клиент</label>
-          <select
-            value={clientId}
-            onChange={(e) => setClientId(e.target.value as "" | string)}
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          >
-            <option value="">Всички</option>
-            {clients.map((client) => (
-              <option key={client.id} value={client.id}>
-                {client.firstName} {client.lastName}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">От дата</label>
-          <input
-            type="date"
-            value={fromDate}
-            onChange={(e) => setFromDate(e.target.value)}
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">До дата</label>
-          <input
-            type="date"
-            value={toDate}
-            onChange={(e) => setToDate(e.target.value)}
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs uppercase text-slate-400">Тип</label>
-          <select
-            value={transactionType}
-            onChange={(e) =>
-              setTransactionType(
-                e.target.value === "" ? "" : (e.target.value as TransactionType)
-              )
-            }
-            className="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
-          >
-            <option value="">Всички</option>
-            <option value="Deposit">Внасяне</option>
-            <option value="Withdrawal">Теглене</option>
-            <option value="TransferIn">Входящ превод</option>
-            <option value="TransferOut">Изходящ превод</option>
-          </select>
-        </div>
+        <Select
+          label="Сметка"
+          value={accountId}
+          onChange={(e) => setAccountId(e.target.value as "" | string)}
+        >
+          <option value="">Всички</option>
+          {accounts.map((account) => (
+            <option key={account.id} value={account.id}>
+              {account.accountNumber} ({account.clientName})
+            </option>
+          ))}
+        </Select>
+        <Select
+          label="Клиент"
+          value={clientId}
+          onChange={(e) => setClientId(e.target.value as "" | string)}
+        >
+          <option value="">Всички</option>
+          {clients.map((client) => (
+            <option key={client.id} value={client.id}>
+              {client.firstName} {client.lastName}
+            </option>
+          ))}
+        </Select>
+        <Input
+          type="date"
+          label="От дата"
+          value={fromDate}
+          onChange={(e) => setFromDate(e.target.value)}
+        />
+        <Input
+          type="date"
+          label="До дата"
+          value={toDate}
+          onChange={(e) => setToDate(e.target.value)}
+        />
+        <Select
+          label="Тип"
+          value={transactionType}
+          onChange={(e) =>
+            setTransactionType(
+              e.target.value === "" ? "" : (e.target.value as TransactionType),
+            )
+          }
+        >
+          <option value="">Всички</option>
+          <option value="Deposit">Внасяне</option>
+          <option value="Withdrawal">Теглене</option>
+          <option value="TransferIn">Входящ превод</option>
+          <option value="TransferOut">Изходящ превод</option>
+        </Select>
         <div className="flex flex-col gap-1 md:flex-row md:items-end md:gap-2">
           <div className="flex flex-1 flex-col gap-1">
-            <label className="text-xs uppercase text-slate-400">
+            <label className="text-xs font-medium text-slate-700">
               Сума мин / макс
             </label>
             <div className="flex gap-2">
-              <input
+              <Input
                 type="number"
                 value={minAmount}
                 onChange={(e) => setMinAmount(e.target.value)}
-                className="w-1/2 rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
+                className="w-1/2"
                 placeholder="Мин"
               />
-              <input
+              <Input
                 type="number"
                 value={maxAmount}
                 onChange={(e) => setMaxAmount(e.target.value)}
-                className="w-1/2 rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm focus:border-emerald-500 focus:outline-none"
+                className="w-1/2"
                 placeholder="Макс"
               />
             </div>
           </div>
           <div className="flex items-end gap-2 md:justify-end">
-            <button
+            <Button
               type="submit"
-              className="rounded bg-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white hover:bg-slate-600"
+              variant="secondary"
+              size="sm"
               disabled={loading}
             >
-              Търсене
-            </button>
-            <button
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Spinner /> Търсене
+                </span>
+              ) : (
+                "Търсене"
+              )}
+            </Button>
+            <Button
               type="button"
+              variant="outline"
+              size="sm"
               onClick={() => {
                 setAccountId("");
                 setClientId("");
@@ -245,74 +246,73 @@ export default function TransactionsPage() {
                   .then(setTransactions)
                   .catch((e) => setError((e as Error).message));
               }}
-              className="hidden rounded border border-slate-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:bg-slate-800 md:inline-flex"
+              className="hidden md:inline-flex"
               disabled={loading}
             >
               Нулиране
-            </button>
+            </Button>
           </div>
         </div>
       </form>
 
-      <div className="overflow-x-auto rounded border border-slate-800 bg-slate-950/60">
-        <table className="min-w-full text-left text-sm">
-          <thead className="border-b border-slate-800 bg-slate-900 text-xs uppercase text-slate-400">
+      <TableWrapper>
+        <Table>
+          <TableHead>
             <tr>
-              <th className="px-3 py-2">Дата</th>
-              <th className="px-3 py-2">Сметка</th>
-              <th className="px-3 py-2">Клиент</th>
-              <th className="px-3 py-2">Тип</th>
-              <th className="px-3 py-2">Сума</th>
-              <th className="px-3 py-2">Описание</th>
+              <TableHeaderCell>Дата</TableHeaderCell>
+              <TableHeaderCell>Сметка</TableHeaderCell>
+              <TableHeaderCell>Клиент</TableHeaderCell>
+              <TableHeaderCell>Тип</TableHeaderCell>
+              <TableHeaderCell>Сума</TableHeaderCell>
+              <TableHeaderCell>Описание</TableHeaderCell>
             </tr>
-          </thead>
-          <tbody>
+          </TableHead>
+          <TableBody>
             {transactions.map((tx) => (
-              <tr
-                key={tx.id}
-                className="border-b border-slate-800 last:border-b-0 hover:bg-slate-900/60"
-              >
-                <td className="px-3 py-2 text-slate-400">
+              <TableRow key={tx.id}>
+                <TableCell className="text-slate-500">
                   {new Date(tx.createdAt).toLocaleString()}
-                </td>
-                <td className="px-3 py-2 font-mono text-xs text-slate-100">
+                </TableCell>
+                <TableCell className="font-mono text-xs">
                   {tx.accountNumber}
-                </td>
-                <td className="px-3 py-2 text-slate-300">{tx.clientName}</td>
-                <td className="px-3 py-2">
-                  <span className="rounded-full px-2 py-1 text-xs font-semibold bg-slate-700/40 text-slate-200">
+                </TableCell>
+                <TableCell className="text-slate-700">{tx.clientName}</TableCell>
+                <TableCell>
+                  <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700">
                     {getTransactionTypeLabel(tx.transactionType)}
                   </span>
-                </td>
-                <td className="px-3 py-2 text-emerald-300">
+                </TableCell>
+                <TableCell className="text-emerald-600 font-medium">
                   {tx.amount.toFixed(2)}
-                </td>
-                <td className="px-3 py-2 text-slate-300">{tx.description}</td>
-              </tr>
+                </TableCell>
+                <TableCell className="text-slate-700">{tx.description}</TableCell>
+              </TableRow>
             ))}
             {transactions.length === 0 && !loading && (
-              <tr>
-                <td
+              <TableRow>
+                <TableCell
                   colSpan={6}
-                  className="px-3 py-6 text-center text-sm text-slate-400"
+                  className="py-6 text-center text-sm text-slate-500"
                 >
                   Няма намерени транзакции.
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             )}
             {loading && (
-              <tr>
-                <td
+              <TableRow>
+                <TableCell
                   colSpan={6}
-                  className="px-3 py-6 text-center text-sm text-slate-400"
+                  className="py-6 text-center text-sm text-slate-500"
                 >
-                  Зареждане...
-                </td>
-              </tr>
+                  <span className="inline-flex items-center justify-center gap-2">
+                    <Spinner /> Зареждане...
+                  </span>
+                </TableCell>
+              </TableRow>
             )}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableWrapper>
     </section>
   );
 }
