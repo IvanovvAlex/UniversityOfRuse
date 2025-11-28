@@ -18,7 +18,6 @@ import { PageHeader } from "../../components/ui/page-header";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Select } from "../../components/ui/select";
-import { Alert } from "../../components/ui/alert";
 import { Card } from "../../components/ui/card";
 import { Spinner } from "../../components/ui/spinner";
 import { useToast } from "../../components/ui/toast";
@@ -27,7 +26,6 @@ export default function OperationsPage() {
   const [accounts, setAccounts] = useState<AccountDto[]>([]);
   const [clients, setClients] = useState<ClientDto[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const [depositAccountId, setDepositAccountId] = useState<string | "">("");
@@ -103,7 +101,6 @@ export default function OperationsPage() {
     }
     setLoading(true);
     setError(null);
-    setMessage(null);
     try {
       const payload: DepositRequest = {
         accountId: String(depositAccountId),
@@ -111,9 +108,6 @@ export default function OperationsPage() {
         description: depositDescription,
       };
       const result = await deposit(payload);
-      setMessage(
-        `Внасянето е успешно. Нова наличност по сметка ${result.accountNumber}: ${result.balance.toFixed(2)}`,
-      );
       toast.showSuccess("Внасянето беше извършено успешно.");
       await loadData();
       setDepositAmount("");
@@ -145,7 +139,6 @@ export default function OperationsPage() {
     }
     setLoading(true);
     setError(null);
-    setMessage(null);
     try {
       const payload: WithdrawRequest = {
         accountId: String(withdrawAccountId),
@@ -153,9 +146,6 @@ export default function OperationsPage() {
         description: withdrawDescription,
       };
       const result = await withdraw(payload);
-      setMessage(
-        `Тегленето е успешно. Нова наличност по сметка ${result.accountNumber}: ${result.balance.toFixed(2)}`,
-      );
       toast.showSuccess("Тегленето беше извършено успешно.");
       await loadData();
       setWithdrawAmount("");
@@ -188,7 +178,6 @@ export default function OperationsPage() {
     }
     setLoading(true);
     setError(null);
-    setMessage(null);
     try {
       const payload: TransferRequest = {
         sourceAccountId: sourceAccountId,
@@ -197,9 +186,6 @@ export default function OperationsPage() {
         description: transferDescription,
       };
       const result = await transfer(payload);
-      setMessage(
-        `Преводът е успешен. Наличност по изходна сметка: ${result.sourceAccount.balance.toFixed(2)}, наличност по целева сметка: ${result.destinationAccount.balance.toFixed(2)}.`,
-      );
       toast.showSuccess("Преводът беше извършен успешно.");
       await loadData();
       setTransferAmount("");
@@ -224,10 +210,6 @@ export default function OperationsPage() {
         title="Операции"
         description="Извършвайте внасяния, тегления и преводи между клиентски сметки."
       />
-
-      {message && <Alert variant="success">{message}</Alert>}
-
-      {error && <Alert variant="error">{error}</Alert>}
 
       <div className="grid gap-4 md:grid-cols-3">
         <form noValidate onSubmit={handleDeposit}>
